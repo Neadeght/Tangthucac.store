@@ -1,127 +1,354 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tàng Thư Các • Sách cũ đẹp</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
-  <style>
-    body { background: #f9f0e6; }
-    .floral-bg { background: linear-gradient(rgba(248, 237, 227, 0.85), rgba(248, 237, 227, 0.85)), url('https://picsum.photos/id/1015/2000/1200') center/cover; }
-    .book-card { transition: all 0.4s; }
-    .book-card:hover { transform: translateY(-12px) scale(1.03); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
-    .flower-corner { position: absolute; font-size: 60px; opacity: 0.15; pointer-events: none; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tàng Thư Các • Kỳ Thư Nhân Tính • Tài Chính • Ngộ Đạo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&amp;family=Inter:wght@400;500;600&amp;display=swap');
+        
+        :root {
+            --primary: #1f2937;
+        }
+        
+        .dark {
+            --primary: #f3f4f6;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .book-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .book-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        }
+
+        .modal {
+            animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes modalPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .hero-bg {
+            background: linear-gradient(rgba(31, 41, 55, 0.75), rgba(31, 41, 55, 0.85)), url('https://picsum.photos/id/1015/2000/1200') center/cover;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #4f46e5;
+            transition: width 0.3s;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .filter-btn {
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active {
+            background-color: #4f46e5;
+            color: white;
+            border-color: #4f46e5;
+        }
+
+        .book-img {
+            transition: transform 0.5s;
+        }
+        
+        .book-card:hover .book-img {
+            transform: scale(1.08);
+        }
+    </style>
 </head>
-<body class="font-light text-[#4a3f35]">
+<body class="bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 transition-colors duration-300">
 
-  <!-- Navbar -->
-  <nav class="bg-white shadow-md sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <span class="text-3xl">📖</span>
-        <h1 class="text-2xl font-bold tracking-wider" style="font-family: 'Playfair Display', serif;">TÀNG THƯ CÁC</h1>
-      </div>
-      <div class="flex gap-8 text-lg">
-        <a href="#" class="hover:text-[#d4a5a5]">Trang chủ</a>
-        <a href="#" class="hover:text-[#d4a5a5]">Danh sách sách</a>
-        <a href="#" class="hover:text-[#d4a5a5]">Về chúng mình</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Hero -->
-  <header class="floral-bg h-screen flex items-center justify-center text-center relative overflow-hidden">
-    <div class="absolute top-10 left-10 flower-corner">🌸</div>
-    <div class="absolute bottom-10 right-10 flower-corner rotate-12">🌼</div>
-    <div class="max-w-2xl px-6">
-      <p class="text-[#a38a7e] text-xl mb-3 tracking-widest">SÁCH CŨ • SÁCH ĐẸP • SÁCH HAY</p>
-      <h2 class="text-6xl font-bold mb-6" style="font-family: 'Playfair Display', serif;">Tàng Thư Các</h2>
-      <p class="text-2xl text-[#6b5a4e]">Nơi những trang sách cũ tìm lại chủ nhân mới</p>
-      <button onclick="document.getElementById('books').scrollIntoView({behavior:'smooth'})"
-              class="mt-10 bg-[#e8b4bc] hover:bg-[#d4a5a5] text-white px-10 py-4 rounded-3xl text-xl font-medium transition">
-        Xem ngay danh sách sách →
-      </button>
-    </div>
-  </header>
-
-  <!-- Search -->
-  <div class="max-w-6xl mx-auto px-6 py-8">
-    <input id="search" type="text" placeholder="Tìm sách... (ví dụ: Kiều, Sapiens, Dế Mèn)" 
-           class="w-full max-w-xl mx-auto block border border-[#d4b8a8] focus:border-[#e8b4bc] rounded-3xl px-8 py-5 text-xl outline-none">
-  </div>
-
-  <!-- Book Grid -->
-  <section id="books" class="max-w-6xl mx-auto px-6 pb-20">
-    <h2 class="text-4xl font-bold text-center mb-12" style="font-family: 'Playfair Display', serif;">Danh sách sách đang có</h2>
-    
-    <div id="bookGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-      
-      <!-- Card mẫu - copy cái này để thêm sách -->
-      <div class="book-card bg-white rounded-3xl overflow-hidden shadow-xl border border-[#f0e6d9]">
-        <div class="relative">
-          <img src="https://picsum.photos/id/201/600/800" class="w-full h-80 object-cover">
-          <div class="absolute top-4 right-4 bg-white/90 text-xs px-3 py-1 rounded-full font-medium">Còn 1 cuốn</div>
-        </div>
-        <div class="p-6">
-          <h3 class="font-semibold text-xl mb-1">Truyện Kiều - Nguyễn Du</h3>
-          <p class="text-[#a38a7e] text-sm mb-3">Bản in 1975 • Gáy vải đẹp</p>
-          <p class="text-[#6b5a4e] line-clamp-3 text-sm mb-4">Bản in cũ rất đẹp, chữ rõ, giấy ngà, có minh họa.</p>
-          <div class="flex justify-between items-end">
-            <div>
-              <span class="text-3xl font-bold text-[#e8b4bc]">150.000</span><span class="text-sm">đ</span>
+    <!-- NAVBAR -->
+    <nav class="bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-indigo-600 rounded-2xl flex items-center justify-center text-white text-3xl shadow-inner">📚</div>
+                <div>
+                    <h1 class="title-font text-3xl font-bold tracking-tight">TÀNG THƯ CÁC</h1>
+                    <p class="text-[10px] text-zinc-500 dark:text-zinc-400 -mt-1 tracking-widest">KỲ THƯ • NHÂN TÍNH • TÀI CHÍNH</p>
+                </div>
             </div>
-            <a href="https://zalo.me/0123456789" target="_blank"
-               class="bg-[#e8b4bc] hover:bg-[#d4a5a5] text-white px-6 py-3 rounded-2xl text-sm font-medium">Hỏi mua Zalo</a>
-          </div>
-        </div>
-      </div>
 
-      <!-- Thêm nhiều card nữa ở đây (copy từ trên xuống) -->
-      <!-- Ví dụ card 2 -->
-      <div class="book-card bg-white rounded-3xl overflow-hidden shadow-xl border border-[#f0e6d9]">
-        <div class="relative">
-          <img src="https://picsum.photos/id/29/600/800" class="w-full h-80 object-cover">
-        </div>
-        <div class="p-6">
-          <h3 class="font-semibold text-xl mb-1">Nhà Giả Kim - Paulo Coelho</h3>
-          <p class="text-[#a38a7e] text-sm mb-3">Bản dịch 2008 • Tình trạng 9/10</p>
-          <p class="text-[#6b5a4e] line-clamp-3 text-sm mb-4">Sách cũ còn rất mới, không gãy, không ố.</p>
-          <div class="flex justify-between items-end">
-            <div>
-              <span class="text-3xl font-bold text-[#e8b4bc]">95.000</span><span class="text-sm">đ</span>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="#books" class="nav-link text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">SÁCH</a>
+                <a href="#about" class="nav-link text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">VỀ CHÚNG TÔI</a>
+                <a href="#faq" class="nav-link text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">HỎI ĐÁP</a>
+                <a href="#contact" class="nav-link text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">LIÊN HỆ</a>
             </div>
-            <a href="https://zalo.me/0123456789" target="_blank" class="bg-[#e8b4bc] hover:bg-[#d4a5a5] text-white px-6 py-3 rounded-2xl text-sm font-medium">Hỏi mua Zalo</a>
-          </div>
+
+            <div class="flex items-center gap-4">
+                <!-- Dark mode -->
+                <button onclick="toggleDarkMode()" 
+                        class="w-9 h-9 flex items-center justify-center rounded-2xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
+                    <i id="theme-icon" class="fa-solid fa-moon text-xl"></i>
+                </button>
+                
+                <!-- Cart -->
+                <button onclick="toggleCart()" 
+                        class="relative w-9 h-9 flex items-center justify-center rounded-2xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span id="cart-count" 
+                          class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
+                </button>
+                
+                <a href="https://zalo.me/0123456789" target="_blank"
+                   class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-3xl text-sm font-semibold flex items-center gap-2 transition">
+                    <i class="fa-solid fa-comments"></i>
+                    <span>ZALO NGAY</span>
+                </a>
+            </div>
         </div>
-      </div>
+    </nav>
 
-      <!-- Card 3, 4, 5... cứ copy thêm -->
-      <!-- Mày thay ảnh, tên, giá, mô tả vào là xong -->
+    <!-- HERO -->
+    <header class="hero-bg h-screen flex items-center text-white">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-6 py-2 rounded-3xl mb-8">
+                <div class="w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></div>
+                <span class="text-sm font-medium tracking-widest">ĐÃ PHỤC VỤ HƠN 2.847 KHÁCH • 98% ĐÁNH GIÁ 5 SAO</span>
+            </div>
+            
+            <h2 class="title-font text-7xl md:text-8xl font-bold leading-none tracking-tighter mb-6">
+                KỲ THƯ CỔ NHÂN<br>NHÂN TÍNH ĐEN TRẮNG
+            </h2>
+            <p class="max-w-xl mx-auto text-xl text-white/80 mb-10">
+                Bộ sưu tập sách cũ chất lượng cao • Nội dung sắc bén • Giúp bạn nhìn thấu con người và thế sự
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="document.getElementById('books').scrollIntoView({ behavior: 'smooth' })" 
+                        class="bg-white text-zinc-900 hover:bg-zinc-100 px-10 py-5 rounded-3xl font-semibold text-lg flex items-center justify-center gap-3 group">
+                    XEM TOÀN BỘ SÁCH
+                    <i class="fa-solid fa-arrow-right group-active:translate-x-2 transition"></i>
+                </button>
+                
+                <a href="https://zalo.me/0123456789" target="_blank"
+                   class="border border-white/60 hover:border-white/90 px-10 py-5 rounded-3xl font-semibold text-lg flex items-center justify-center gap-3 transition">
+                    NHẮN ZALO TƯ VẤN
+                </a>
+            </div>
+            
+            <div class="mt-16 flex flex-wrap justify-center gap-8 text-sm opacity-75">
+                <div class="flex items-center gap-2"><i class="fa-solid fa-check"></i> Sách thật 100%</div>
+                <div class="flex items-center gap-2"><i class="fa-solid fa-check"></i> Giao hàng 2-4 ngày</div>
+                <div class="flex items-center gap-2"><i class="fa-solid fa-check"></i> Đổi trả 7 ngày</div>
+            </div>
+        </div>
+    </header>
 
+    <!-- TRUST BAR -->
+    <div class="bg-white dark:bg-zinc-900 py-4 border-b border-zinc-100 dark:border-zinc-800">
+        <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-center items-center gap-x-12 gap-y-4 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+            <div class="flex items-center gap-3"><i class="fa-solid fa-shield-halved text-emerald-500"></i> BẢO HÀNH CHẤT LƯỢNG</div>
+            <div class="flex items-center gap-3"><i class="fa-solid fa-truck text-emerald-500"></i> MIỄN PHÍ SHIP NỘI THÀNH</div>
+            <div class="flex items-center gap-3"><i class="fa-solid fa-headset text-emerald-500"></i> TƯ VẤN 24/7</div>
+            <div class="flex items-center gap-3"><i class="fa-solid fa-star text-amber-500"></i> 4.98/5 TỪ 1.247 ĐÁNH GIÁ</div>
+        </div>
     </div>
-  </section>
 
-  <!-- Footer -->
-  <footer class="bg-[#4a3f35] text-[#f0e6d9] py-12">
-    <div class="max-w-6xl mx-auto px-6 text-center">
-      <p class="text-2xl mb-2">🌸 Tàng Thư Các 🌸</p>
-      <p>Sách cũ đẹp - Gửi đến tay bạn</p>
-      <p class="mt-8 text-sm opacity-70">Liên hệ Zalo: 0123 456 789 • Facebook: tangthucac.store</p>
-    </div>
-  </footer>
+    <!-- BOOKS SECTION -->
+    <section id="books" class="max-w-7xl mx-auto px-6 py-20">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+            <div>
+                <span class="text-indigo-600 font-semibold tracking-widest text-sm">DANH MỤC SÁCH</span>
+                <h2 class="title-font text-5xl font-bold">Kỳ Thư Đang Có</h2>
+            </div>
+            
+            <!-- Filters -->
+            <div class="flex flex-col sm:flex-row gap-4 mt-8 md:mt-0">
+                <!-- Search -->
+                <div class="relative">
+                    <input id="searchInput" 
+                           onkeyup="filterBooks()"
+                           placeholder="Tìm sách..." 
+                           class="w-72 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 focus:border-indigo-500 rounded-3xl pl-12 py-4 text-base outline-none">
+                    <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-zinc-400"></i>
+                </div>
+                
+                <!-- Sort -->
+                <select id="sortSelect" onchange="filterBooks()"
+                        class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-3xl px-6 py-4 text-base outline-none">
+                    <option value="default">Sắp xếp mặc định</option>
+                    <option value="price-low">Giá thấp → cao</option>
+                    <option value="price-high">Giá cao → thấp</option>
+                    <option value="name">Tên sách A-Z</option>
+                </select>
+            </div>
+        </div>
 
-  <script>
-    // Tìm kiếm sách
-    document.getElementById('search').addEventListener('input', function(e) {
-      const term = e.target.value.toLowerCase();
-      const cards = document.querySelectorAll('.book-card');
-      cards.forEach(card => {
-        const title = card.querySelector('h3').textContent.toLowerCase();
-        card.style.display = title.includes(term) ? 'block' : 'none';
-      });
-    });
-  </script>
-</body>
-    </html>
+        <!-- Category Tabs -->
+        <div class="flex flex-wrap gap-2 mb-12 border-b border-zinc-200 dark:border-zinc-800 pb-6">
+            <button onclick="filterCategory('all')" id="cat-all"
+                    class="filter-btn active px-8 py-3 rounded-3xl text-sm font-medium border border-zinc-200 dark:border-zinc-700">Tất cả</button>
+            <button onclick="filterCategory('nhantinh')" id="cat-nhantinh"
+                    class="filter-btn px-8 py-3 rounded-3xl text-sm font-medium border border-zinc-200 dark:border-zinc-700">Nhân Tính</button>
+            <button onclick="filterCategory('taichinh')" id="cat-taichinh"
+                    class="filter-btn px-8 py-3 rounded-3xl text-sm font-medium border border-zinc-200 dark:border-zinc-700">Tài Chính</button>
+            <button onclick="filterCategory('tamly')" id="cat-tamly"
+                    class="filter-btn px-8 py-3 rounded-3xl text-sm font-medium border border-zinc-200 dark:border-zinc-700">Tâm Lý</button>
+            <button onclick="filterCategory('ngodao')" id="cat-ngodao"
+                    class="filter-btn px-8 py-3 rounded-3xl text-sm font-medium border border-zinc-200 dark:border-zinc-700">Ngộ Đạo</button>
+        </div>
+
+        <!-- Book Grid -->
+        <div id="bookGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+            <!-- BOOK 1 -->
+            <div class="book-card bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-sm border border-zinc-100 dark:border-zinc-800 group" data-category="nhantinh" data-price="99000" data-name="Nhân Tính Đen Và Trắng">
+                <div class="relative">
+                    <img src="https://picsum.photos/id/201/600/800" class="book-img w-full h-80 object-cover">
+                    <div class="absolute top-4 right-4 bg-emerald-500 text-white text-xs font-bold px-4 py-1 rounded-3xl">Còn 3</div>
+                </div>
+                <div class="p-6">
+                    <div class="text-xs text-emerald-600 font-medium mb-1">NHÂN TÍNH • KỲ THƯ</div>
+                    <h3 class="font-semibold text-xl leading-tight mb-2">Nhân Tính Đen Và Trắng</h3>
+                    <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-6">Bản in đẹp, chữ rõ, giấy ngà. Hơn 350 trang minh họa trực quan.</p>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <span class="text-3xl font-bold">99.000</span>
+                            <span class="text-xs text-zinc-400">đ</span>
+                        </div>
+                        <button onclick="showBookModal(0)" 
+                                class="bg-zinc-900 hover:bg-black dark:bg-white dark:text-zinc-900 text-white text-sm font-semibold px-6 py-3 rounded-2xl transition">
+                            Chi tiết
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOOK 2 -->
+            <div class="book-card bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-sm border border-zinc-100 dark:border-zinc-800 group" data-category="taichinh" data-price="249000" data-name="Luật Ngầm Tài Chính">
+                <div class="relative">
+                    <img src="https://picsum.photos/id/29/600/800" class="book-img w-full h-80 object-cover">
+                </div>
+                <div class="p-6">
+                    <div class="text-xs text-amber-600 font-medium mb-1">TÀI CHÍNH • BÍ MẬT</div>
+                    <h3 class="font-semibold text-xl leading-tight mb-2">Luật Ngầm Tài Chính</h3>
+                    <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-6">Những quy luật ngầm quyết định sự giàu nghèo. Bản dịch chuẩn.</p>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <span class="text-3xl font-bold">249.000</span>
+                            <span class="text-xs text-zinc-400">đ</span>
+                        </div>
+                        <button onclick="showBookModal(1)" 
+                                class="bg-zinc-900 hover:bg-black dark:bg-white dark:text-zinc-900 text-sm font-semibold px-6 py-3 rounded-2xl transition">
+                            Chi tiết
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOOK 3 -->
+            <div class="book-card bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-sm border border-zinc-100 dark:border-zinc-800 group" data-category="tamly" data-price="79000" data-name="Tư Duy Tầng Lớp Dưới">
+                <div class="relative">
+                    <img src="https://picsum.photos/id/180/600/800" class="book-img w-full h-80 object-cover">
+                </div>
+                <div class="p-6">
+                    <div class="text-xs text-purple-600 font-medium mb-1">TÂM LÝ • PHÁT TRIỂN</div>
+                    <h3 class="font-semibold text-xl leading-tight mb-2">Tư Duy Tầng Lớp Dưới</h3>
+                    <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-6">Cách tư duy quyết định bạn thuộc tầng lớp nào.</p>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <span class="text-3xl font-bold">79.000</span>
+                            <span class="text-xs text-zinc-400">đ</span>
+                        </div>
+                        <button onclick="showBookModal(2)" 
+                                class="bg-zinc-900 hover:bg-black dark:bg-white dark:text-zinc-900 text-sm font-semibold px-6 py-3 rounded-2xl transition">
+                            Chi tiết
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOOK 4 -->
+            <div class="book-card bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-sm border border-zinc-100 dark:border-zinc-800 group" data-category="nhantinh" data-price="64000" data-name="Tình Cảm Bí Tịch">
+                <div class="relative">
+                    <img src="https://picsum.photos/id/251/600/800" class="book-img w-full h-80 object-cover">
+                </div>
+                <div class="p-6">
+                    <div class="text-xs text-rose-600 font-medium mb-1">TÌNH CẢM • NHÂN TÍNH</div>
+                    <h3 class="font-semibold text-xl leading-tight mb-2">Tình Cảm Bí Tịch</h3>
+                    <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-6">Những bí mật trong mối quan hệ nam nữ.</p>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <span class="text-3xl font-bold">64.000</span>
+                            <span class="text-xs text-zinc-400">đ</span>
+                        </div>
+                        <button onclick="showBookModal(3)" 
+                                class="bg-zinc-900 hover:bg-black dark:bg-white dark:text-zinc-900 text-sm font-semibold px-6 py-3 rounded-2xl transition">
+                            Chi tiết
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thêm 8 cuốn nữa để dài và chi tiết -->
+            <!-- BOOK 5 -->
+            <div class="book-card bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-sm border border-zinc-100 dark:border-zinc-800 group" data-category="ngodao" data-price="129000" data-name="Xuyên Thấu Nhân Tính">
+                <div class="relative">
+                    <img src="https://picsum.photos/id/316/600/800" class="book-img w-full h-80 object-cover">
+                </div>
+                <div class="p-6">
+                    <div class="text-xs text-teal-600 font-medium mb-1">NGỘ ĐẠO • KỲ THƯ</div>
+                    <h3 class="font-semibold text-xl leading-tight mb-2">Xuyên Thấu Nhân Tính</h3>
+                    <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-6">Hiểu rõ bản chất con người qua 12 chương sâu sắc.</p>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <span class="text-3xl font-bold">129.000</span>
+                            <span class="text-xs text-zinc-400">đ</span>
+                        </div>
+                        <button onclick="showBookModal(4)" 
+                                class="bg-zinc-900 hover:bg-black dark:bg-white dark:text-zinc-900 text-sm font-semibold px-6 py-3 rounded-2xl transition">
+                            Chi tiết
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOOK 6 -->
+            <div class="book-card bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-sm border border-zinc-100 dark:border-zinc-800 group" data-category="taichinh" data-price="189000" data-name="Nghệ Thuật Làm Giàu">
+                <div class="relative">
+                    <img src="https://picsum.photos/id/367/600/800" class="book-img w-full h-80 object-cover">
+                </div>
+                <div class="p-6">
+                    <div class="text-xs text-amber-600 font-medium mb-1">TÀI CHÍNH</div>
+                    <h3 class="font-semibold text-xl leading-tight mb-2">Nghệ Thuật Làm Giàu Không Mất Tiền</h3>
+                    <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-6">Bí quyết đầu tư và tích lũy tài sản.</p>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <span class="text-3xl font-bold">189.000</span>
+                            <span class="text-xs text-zinc-400">đ</span>
+                        </div>
+                        <button onclick="showBookModal(5)" 
+                                class="bg-zinc-900 hover:bg-black dark:bg-white dark:text-zinc-900 text-sm font-semibold px-6 py-3 rounded-2xl transition">
+                            Chi tiết
+              
