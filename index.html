@@ -1,354 +1,490 @@
+```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tàng Thư Các • Kỳ Thư Nhân Tính • Tài Chính • Ngộ Đạo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&amp;family=Inter:wght@400;500;600&amp;display=swap');
-        
-        :root {
-            --primary: #1f2937;
-        }
-        
-        .dark {
-            --primary: #f3f4f6;
-        }
-        
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-        }
-        
-        .title-font {
-            font-family: 'Playfair Display', serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CỪU NGỘ ĐẠO • CẤM THUẬT TỐI CAO</title>
+  <meta name="description" content="Cấm thuật nhân tính – kiến thức bị che giấu. Vũ khí tư duy để thấu hiểu lòng người, chấm dứt nạn nhân, thống trị trong bóng tối."/>
+  <meta property="og:title" content="Cừu Ngộ Đạo – Cấm Thuật Không Được Tiết Lộ"/>
+  <meta property="og:description" content="Xuyên thấu nhân tính. Thống trị im lặng. Kiến thức thay đổi vĩnh viễn."/>
+  <meta property="og:image" content="https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=1200&auto=format&fit=crop&q=80"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=IM+Fell+English+SC&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;700;900&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+  <style>
+    :root {
+      --bg: #000000;
+      --card: rgba(5,5,5,0.85);
+      --text: #d4c9a8;
+      --accent: #b89b4a;
+      --accent-glow: #e0c870;
+      --red: #6b0000;
+      --gradient: radial-gradient(ellipse at 40% 10%, #1f1800 0%, #000000 80%);
+      --shadow-deep: 0 35px 90px rgba(0,0,0,0.99);
+      --glow-intense: 0 0 55px rgba(184,155,74,0.42);
+      --blur-heavy: blur(20px);
+      --neon-glow: 0 0 15px rgba(184,155,74,0.6), 0 0 30px rgba(184,155,74,0.4);
+    }
 
-        .book-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .book-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-        }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--gradient);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.85;
+      overflow-x: hidden;
+      background-attachment: fixed;
+    }
 
-        .modal {
-            animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        
-        @keyframes modalPop {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
+    .parallax-bg {
+      position: fixed;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1557683316-973673baf926?w=3000&auto=format&fit=crop&q=15&blend=000000&blend-mode=multiply') center/cover no-repeat fixed;
+      z-index: -3;
+      opacity: 0.1;
+      transform: translateZ(0);
+    }
 
-        .hero-bg {
-            background: linear-gradient(rgba(31, 41, 55, 0.75), rgba(31, 41, 55, 0.85)), url('https://picsum.photos/id/1015/2000/1200') center/cover;
-        }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.95) 100%);
+      z-index: -2;
+    }
 
-        .nav-link {
-            position: relative;
-        }
-        
-        .nav-link:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -2px;
-            left: 0;
-            background-color: #4f46e5;
-            transition: width 0.3s;
-        }
-        
-        .nav-link:hover:after {
-            width: 100%;
-        }
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 120px 36px 180px;
+      position: relative;
+      z-index: 3;
+    }
 
-        .filter-btn {
-            transition: all 0.3s;
-        }
-        
-        .filter-btn.active {
-            background-color: #4f46e5;
-            color: white;
-            border-color: #4f46e5;
-        }
+    header {
+      text-align: center;
+      margin-bottom: 130px;
+      position: relative;
+    }
 
-        .book-img {
-            transition: transform 0.5s;
-        }
-        
-        .book-card:hover .book-img {
-            transform: scale(1.08);
-        }
-    </style>
+    .avatar-container {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      margin: 0 auto 60px;
+    }
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 12px double var(--accent);
+      box-shadow: var(--glow-intense), var(--neon-glow), inset 0 0 60px rgba(184,155,74,0.3);
+      object-fit: cover;
+      transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.475);
+    }
+
+    .avatar:hover {
+      transform: scale(1.2) rotate(12deg);
+      box-shadow: 0 0 120px rgba(184,155,74,0.9), var(--neon-glow), inset 0 0 70px rgba(184,155,74,0.5);
+    }
+
+    .ring-orbit {
+      position: absolute;
+      inset: -35px;
+      border: 2px dashed var(--accent);
+      border-radius: 50%;
+      animation: orbit 50s linear infinite;
+      opacity: 0.28;
+    }
+
+    .ring-orbit:nth-child(2) {
+      inset: -55px;
+      animation-duration: 80s;
+      opacity: 0.18;
+    }
+
+    @keyframes orbit {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    h1 {
+      font-family: 'UnifrakturMaguntia', cursive;
+      font-size: 6.5rem;
+      background: linear-gradient(90deg, var(--accent), var(--accent-glow), #f0d47a, var(--accent-glow), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 10px 35px rgba(184,155,74,0.55);
+      letter-spacing: 10px;
+      margin-bottom: 24px;
+      animation: subtle-pulse 8s infinite alternate;
+    }
+
+    @keyframes subtle-pulse {
+      0% { opacity: 0.95; }
+      100% { opacity: 1; }
+    }
+
+    .tagline {
+      font-family: 'IM Fell English SC', serif;
+      font-size: 2.1rem;
+      opacity: 0.92;
+      font-style: italic;
+      margin-bottom: 36px;
+      letter-spacing: 2.5px;
+      text-shadow: 0 3px 12px rgba(0,0,0,0.95);
+    }
+
+    .bio {
+      font-size: 1.3rem;
+      max-width: 600px;
+      margin: 0 auto 80px;
+      opacity: 0.95;
+      letter-spacing: 0.8px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+    }
+
+    .warning {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--red);
+      text-align: center;
+      margin: 50px 0 100px;
+      letter-spacing: 2px;
+      font-weight: 800;
+      text-shadow: 0 0 20px rgba(107,0,0,0.7);
+      animation: pulse-red 4s infinite;
+    }
+
+    @keyframes pulse-red {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+
+    .categories {
+      margin: 100px 0;
+    }
+
+    .category-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 3rem;
+      color: var(--accent);
+      text-align: center;
+      margin: 100px 0 50px;
+      letter-spacing: 5px;
+      position: relative;
+    }
+
+    .category-title::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 220px;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+      box-shadow: 0 0 30px var(--glow-intense);
+    }
+
+    .products {
+      display: grid;
+      gap: 40px;
+    }
+
+    .product {
+      background: var(--card);
+      backdrop-filter: var(--blur-heavy);
+      -webkit-backdrop-filter: var(--blur-heavy);
+      border-radius: 32px;
+      overflow: hidden;
+      border: 1px solid rgba(184,155,74,0.2);
+      box-shadow: var(--shadow-deep), inset 0 0 20px rgba(184,155,74,0.08);
+      transition: all 0.8s cubic-bezier(0.23,1,0.32,1);
+      position: relative;
+    }
+
+    .product:hover {
+      transform: translateY(-32px) scale(1.04);
+      box-shadow: 0 60px 130px rgba(0,0,0,1), var(--neon-glow), inset 0 0 30px rgba(184,155,74,0.2);
+      border-color: rgba(184,155,74,0.7);
+    }
+
+    .product-featured::before {
+      content: "CẤM THUẬT TỐI CAO";
+      position: absolute;
+      top: 32px;
+      right: -80px;
+      background: var(--red);
+      color: white;
+      padding: 14px 90px;
+      font-size: 1.1rem;
+      font-weight: 900;
+      transform: rotate(45deg);
+      z-index: 2;
+      box-shadow: 0 10px 25px rgba(107,0,0,0.8);
+    }
+
+    .product-content {
+      padding: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .product-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.7rem;
+      color: var(--accent);
+      margin-bottom: 18px;
+      letter-spacing: 1.8px;
+    }
+
+    .product-price {
+      font-size: 3.2rem;
+      font-weight: 900;
+      color: var(--red);
+      margin-bottom: 32px;
+      text-shadow: 0 5px 15px rgba(107,0,0,0.7);
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      flex: 1;
+      min-width: 200px;
+      padding: 22px 44px;
+      border-radius: 999px;
+      font-weight: 900;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.7s ease;
+      font-size: 1.2rem;
+      position: relative;
+      overflow: hidden;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -180%;
+      width: 180%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+      transition: left 1.2s;
+    }
+
+    .btn:hover::before { left: 180%; }
+
+    .btn-buy {
+      background: linear-gradient(135deg, var(--accent), var(--accent-glow), #f0d47a);
+      color: #000;
+      box-shadow: 0 12px 35px rgba(184,155,74,0.8), var(--neon-glow);
+    }
+
+    .btn-buy:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 25px 60px rgba(184,155,74,1), var(--neon-glow);
+    }
+
+    .btn-preview {
+      background: rgba(184,155,74,0.15);
+      color: var(--accent);
+      border: 3.5px solid var(--accent);
+      box-shadow: inset 0 0 15px rgba(184,155,74,0.3);
+    }
+
+    .btn-preview:hover {
+      background: rgba(184,155,74,0.35);
+      transform: translateY(-7px);
+    }
+
+    .bundle {
+      margin: 140px 0;
+      text-align: center;
+    }
+
+    .bundle-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 3.8rem;
+      color: var(--accent-glow);
+      margin-bottom: 30px;
+      letter-spacing: 6px;
+      text-shadow: 0 0 40px rgba(224,200,112,0.5);
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      margin: 120px 0 70px;
+    }
+
+    .social-icon {
+      font-size: 3.5rem;
+      color: var(--text);
+      transition: all 0.7s;
+    }
+
+    .social-icon:hover {
+      color: var(--accent);
+      transform: scale(1.6) rotate(25deg);
+      text-shadow: 0 0 50px var(--glow-intense);
+    }
+
+    footer {
+      text-align: center;
+      font-size: 1.1rem;
+      opacity: 0.82;
+      padding: 70px 0;
+      border-top: 1px solid rgba(184,155,74,0.18);
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 4.8rem; }
+      .avatar-container { width: 180px; height: 180px; }
+      .container { padding: 80px 28px 140px; }
+      .product-title { font-size: 2.3rem; }
+      .product-price { font-size: 2.8rem; }
+      .btn { padding: 18px 36px; font-size: 1.1rem; }
+    }
+  </style>
 </head>
-<body class="bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 transition-colors duration-300">
+<body>
 
-    <!-- NAVBAR -->
-    <nav class="bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <div class="w-10 h-10 bg-indigo-600 rounded-2xl flex items-center justify-center text-white text-3xl shadow-inner">📚</div>
-                <div>
-                    <h1 class="title-font text-3xl font-bold tracking-tight">TÀNG THƯ CÁC</h1>
-                    <p class="text-[10px] text-zinc-500 dark:text-zinc-400 -mt-1 tracking-widest">KỲ THƯ • NHÂN TÍNH • TÀI CHÍNH</p>
-                </div>
-            </div>
+  <div class="parallax-bg"></div>
+  <div class="overlay"></div>
 
-            <div class="hidden md:flex items-center gap-8 text-sm font-medium">
-                <a href="#books" class="nav-link text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">SÁCH</a>
-                <a href="#about" class="nav-link text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">VỀ CHÚNG TÔI</a>
-                <a href="#faq" class="nav-link text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">HỎI ĐÁP</a>
-                <a href="#contact" class="nav-link text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">LIÊN HỆ</a>
-            </div>
+  <div class="container">
 
-            <div class="flex items-center gap-4">
-                <!-- Dark mode -->
-                <button onclick="toggleDarkMode()" 
-                        class="w-9 h-9 flex items-center justify-center rounded-2xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
-                    <i id="theme-icon" class="fa-solid fa-moon text-xl"></i>
-                </button>
-                
-                <!-- Cart -->
-                <button onclick="toggleCart()" 
-                        class="relative w-9 h-9 flex items-center justify-center rounded-2xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
-                    <i class="fa-solid fa-bag-shopping text-xl"></i>
-                    <span id="cart-count" 
-                          class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
-                </button>
-                
-                <a href="https://zalo.me/0123456789" target="_blank"
-                   class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-3xl text-sm font-semibold flex items-center gap-2 transition">
-                    <i class="fa-solid fa-comments"></i>
-                    <span>ZALO NGAY</span>
-                </a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- HERO -->
-    <header class="hero-bg h-screen flex items-center text-white">
-        <div class="max-w-5xl mx-auto px-6 text-center">
-            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-6 py-2 rounded-3xl mb-8">
-                <div class="w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></div>
-                <span class="text-sm font-medium tracking-widest">ĐÃ PHỤC VỤ HƠN 2.847 KHÁCH • 98% ĐÁNH GIÁ 5 SAO</span>
-            </div>
-            
-            <h2 class="title-font text-7xl md:text-8xl font-bold leading-none tracking-tighter mb-6">
-                KỲ THƯ CỔ NHÂN<br>NHÂN TÍNH ĐEN TRẮNG
-            </h2>
-            <p class="max-w-xl mx-auto text-xl text-white/80 mb-10">
-                Bộ sưu tập sách cũ chất lượng cao • Nội dung sắc bén • Giúp bạn nhìn thấu con người và thế sự
-            </p>
-            
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onclick="document.getElementById('books').scrollIntoView({ behavior: 'smooth' })" 
-                        class="bg-white text-zinc-900 hover:bg-zinc-100 px-10 py-5 rounded-3xl font-semibold text-lg flex items-center justify-center gap-3 group">
-                    XEM TOÀN BỘ SÁCH
-                    <i class="fa-solid fa-arrow-right group-active:translate-x-2 transition"></i>
-                </button>
-                
-                <a href="https://zalo.me/0123456789" target="_blank"
-                   class="border border-white/60 hover:border-white/90 px-10 py-5 rounded-3xl font-semibold text-lg flex items-center justify-center gap-3 transition">
-                    NHẮN ZALO TƯ VẤN
-                </a>
-            </div>
-            
-            <div class="mt-16 flex flex-wrap justify-center gap-8 text-sm opacity-75">
-                <div class="flex items-center gap-2"><i class="fa-solid fa-check"></i> Sách thật 100%</div>
-                <div class="flex items-center gap-2"><i class="fa-solid fa-check"></i> Giao hàng 2-4 ngày</div>
-                <div class="flex items-center gap-2"><i class="fa-solid fa-check"></i> Đổi trả 7 ngày</div>
-            </div>
-        </div>
+    <header>
+      <div class="avatar-container">
+        <div class="ring-orbit"></div>
+        <div class="ring-orbit"></div>
+        <img src="https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800&auto=format&fit=crop&q=90" alt="Cừu Ngộ Đạo" class="avatar"/>
+      </div>
+      <h1>CỪU NGỘ ĐẠO</h1>
+      <div class="tagline">ᶻ 𝗓 𐰁 • Cấm Thuật Tối Cao</div>
+      <p class="bio">Kiến thức bị cấm đoán vĩnh viễn – không trường lớp, không sách vở nào dám truyền đạt.<br>Vũ khí tư duy sắc bén để nhìn thấu tâm can, kết thúc kiếp nạn nhân, bước vào vị thế thống trị.</p>
+      <div class="warning">CẢNH BÁO: Một khi tiếp xúc, nhận thức của bạn sẽ thay đổi mãi mãi – không thể quay lại.</div>
     </header>
 
-    <!-- TRUST BAR -->
-    <div class="bg-white dark:bg-zinc-900 py-4 border-b border-zinc-100 dark:border-zinc-800">
-        <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-center items-center gap-x-12 gap-y-4 text-sm font-medium text-zinc-500 dark:text-zinc-400">
-            <div class="flex items-center gap-3"><i class="fa-solid fa-shield-halved text-emerald-500"></i> BẢO HÀNH CHẤT LƯỢNG</div>
-            <div class="flex items-center gap-3"><i class="fa-solid fa-truck text-emerald-500"></i> MIỄN PHÍ SHIP NỘI THÀNH</div>
-            <div class="flex items-center gap-3"><i class="fa-solid fa-headset text-emerald-500"></i> TƯ VẤN 24/7</div>
-            <div class="flex items-center gap-3"><i class="fa-solid fa-star text-amber-500"></i> 4.98/5 TỪ 1.247 ĐÁNH GIÁ</div>
+    <div class="categories">
+
+      <div class="category-title">XUYÊN THẤU NHÂN TÍNH</div>
+      <div class="products">
+        <div class="product product-featured">
+          <div class="product-content">
+            <div class="product-title">BẢO ĐIỂN NHÂN TÍNH + AUDIO</div>
+            <div class="product-price">109.000 ₫</div>
+            <div class="product-actions">
+              <a href="#" class="btn btn-buy">MUA NGAY</a>
+              <a href="#" class="btn btn-preview">NGHE THỬ AUDIO</a>
+            </div>
+          </div>
         </div>
+
+        <div class="product">
+          <div class="product-content">
+            <div class="product-title">NHÂN TÍNH ĐEN VÀ TRẮNG</div>
+            <div class="product-price">99.000 ₫</div>
+            <div class="product-actions">
+              <a href="#" class="btn btn-buy">MUA NGAY</a>
+              <a href="#" class="btn btn-preview">ĐỌC THỬ</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="product">
+          <div class="product-content">
+            <div class="product-title">XUYÊN THẤU NHÂN TÍNH</div>
+            <div class="product-price">69.000 ₫</div>
+            <div class="product-actions">
+              <a href="#" class="btn btn-buy">MUA NGAY</a>
+              <a href="#" class="btn btn-preview">ĐỌC THỬ</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="product">
+          <div class="product-content">
+            <div class="product-title">TUYỆT MẬT NHÂN TÍNH</div>
+            <div class="product-price">69.000 ₫</div>
+            <div class="product-actions">
+              <a href="#" class="btn btn-buy">MUA NGAY</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-title">MƯU LƯỢC & THỨC TỈNH</div>
+      <div class="products">
+        <div class="product">
+          <div class="product-content">
+            <div class="product-title">VINH KHÔ DÁM - TIỂU NHÂN KINH</div>
+            <div class="product-price">59.000 ₫</div>
+            <div class="product-actions">
+              <a href="#" class="btn btn-buy">MUA NGAY</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="product">
+          <div class="product-content">
+            <div class="product-title">NHÂN TÍNH XÃ GIAO</div>
+            <div class="product-price">59.000 ₫</div>
+            <div class="product-actions">
+              <a href="#" class="btn btn-buy">MUA NGAY</a>
+              <a href="#" class="btn btn-preview">ĐỌC THỬ</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="product">
+          <div class="product-content">
+            <div class="product-title">TƯ DUY TẦNG LỚP DƯỚI</div>
+            <div class="product-price">79.000 ₫</div>
+            <div class="product-actions">
+              <a href="#" class="btn btn-buy">MUA NGAY</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- BOOKS SECTION -->
-    <section id="books" class="max-w-7xl mx-auto px-6 py-20">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-12">
-            <div>
-                <span class="text-indigo-600 font-semibold tracking-widest text-sm">DANH MỤC SÁCH</span>
-                <h2 class="title-font text-5xl font-bold">Kỳ Thư Đang Có</h2>
-            </div>
-            
-            <!-- Filters -->
-            <div class="flex flex-col sm:flex-row gap-4 mt-8 md:mt-0">
-                <!-- Search -->
-                <div class="relative">
-                    <input id="searchInput" 
-                           onkeyup="filterBooks()"
-                           placeholder="Tìm sách..." 
-                           class="w-72 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 focus:border-indigo-500 rounded-3xl pl-12 py-4 text-base outline-none">
-                    <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-zinc-400"></i>
-                </div>
-                
-                <!-- Sort -->
-                <select id="sortSelect" onchange="filterBooks()"
-                        class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-3xl px-6 py-4 text-base outline-none">
-                    <option value="default">Sắp xếp mặc định</option>
-                    <option value="price-low">Giá thấp → cao</option>
-                    <option value="price-high">Giá cao → thấp</option>
-                    <option value="name">Tên sách A-Z</option>
-                </select>
-            </div>
+    <div class="bundle">
+      <div class="bundle-title">TOÀN BỘ CẤM THUẬT</div>
+      <div class="product product-featured" style="max-width: 540px; margin: 50px auto;">
+        <div class="product-content">
+          <div class="product-title">BỘ SƯU TẬP CẤM THUẬT TOÀN TẬP</div>
+          <div class="product-price">1.400.000 ₫</div>
+          <div class="product-actions">
+            <a href="#" class="btn btn-buy">SỞ HỮU VĨNH VIỄN</a>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <!-- Category Tabs -->
-        <div class="flex flex-wrap gap-2 mb-12 border-b border-zinc-200 dark:border-zinc-800 pb-6">
-            <button onclick="filterCategory('all')" id="cat-all"
-                    class="filter-btn active px-8 py-3 rounded-3xl text-sm font-medium border border-zinc-200 dark:border-zinc-700">Tất cả</button>
-            <button onclick="filterCategory('nhantinh')" id="cat-nhantinh"
-                    class="filter-btn px-8 py-3 rounded-3xl text-sm font-medium border border-zinc-200 dark:border-zinc-700">Nhân Tính</button>
-            <button onclick="filterCategory('taichinh')" id="cat-taichinh"
-                    class="filter-btn px-8 py-3 rounded-3xl text-sm font-medium border border-zinc-200 dark:border-zinc-700">Tài Chính</button>
-            <button onclick="filterCategory('tamly')" id="cat-tamly"
-                    class="filter-btn px-8 py-3 rounded-3xl text-sm font-medium border border-zinc-200 dark:border-zinc-700">Tâm Lý</button>
-            <button onclick="filterCategory('ngodao')" id="cat-ngodao"
-                    class="filter-btn px-8 py-3 rounded-3xl text-sm font-medium border border-zinc-200 dark:border-zinc-700">Ngộ Đạo</button>
-        </div>
+    <div class="social-links">
+      <a href="https://tiktok.com/@cuungodao" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
+      <a href="#" target="_blank" class="social-icon"><i class="fab fa-telegram-plane"></i></a>
+      <a href="#" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+    </div>
 
-        <!-- Book Grid -->
-        <div id="bookGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
-            <!-- BOOK 1 -->
-            <div class="book-card bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-sm border border-zinc-100 dark:border-zinc-800 group" data-category="nhantinh" data-price="99000" data-name="Nhân Tính Đen Và Trắng">
-                <div class="relative">
-                    <img src="https://picsum.photos/id/201/600/800" class="book-img w-full h-80 object-cover">
-                    <div class="absolute top-4 right-4 bg-emerald-500 text-white text-xs font-bold px-4 py-1 rounded-3xl">Còn 3</div>
-                </div>
-                <div class="p-6">
-                    <div class="text-xs text-emerald-600 font-medium mb-1">NHÂN TÍNH • KỲ THƯ</div>
-                    <h3 class="font-semibold text-xl leading-tight mb-2">Nhân Tính Đen Và Trắng</h3>
-                    <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-6">Bản in đẹp, chữ rõ, giấy ngà. Hơn 350 trang minh họa trực quan.</p>
-                    <div class="flex items-end justify-between">
-                        <div>
-                            <span class="text-3xl font-bold">99.000</span>
-                            <span class="text-xs text-zinc-400">đ</span>
-                        </div>
-                        <button onclick="showBookModal(0)" 
-                                class="bg-zinc-900 hover:bg-black dark:bg-white dark:text-zinc-900 text-white text-sm font-semibold px-6 py-3 rounded-2xl transition">
-                            Chi tiết
-                        </button>
-                    </div>
-                </div>
-            </div>
+    <footer>
+      © 2026 CỪU NGỘ ĐẠO • Nơi lưu giữ những cấm thuật tối cao – không bao giờ được phép công khai.<br>
+      Liên hệ bí mật: @cuungodao | Đọc xong, bạn sẽ không còn như trước nữa.
+    </footer>
 
-            <!-- BOOK 2 -->
-            <div class="book-card bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-sm border border-zinc-100 dark:border-zinc-800 group" data-category="taichinh" data-price="249000" data-name="Luật Ngầm Tài Chính">
-                <div class="relative">
-                    <img src="https://picsum.photos/id/29/600/800" class="book-img w-full h-80 object-cover">
-                </div>
-                <div class="p-6">
-                    <div class="text-xs text-amber-600 font-medium mb-1">TÀI CHÍNH • BÍ MẬT</div>
-                    <h3 class="font-semibold text-xl leading-tight mb-2">Luật Ngầm Tài Chính</h3>
-                    <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-6">Những quy luật ngầm quyết định sự giàu nghèo. Bản dịch chuẩn.</p>
-                    <div class="flex items-end justify-between">
-                        <div>
-                            <span class="text-3xl font-bold">249.000</span>
-                            <span class="text-xs text-zinc-400">đ</span>
-                        </div>
-                        <button onclick="showBookModal(1)" 
-                                class="bg-zinc-900 hover:bg-black dark:bg-white dark:text-zinc-900 text-sm font-semibold px-6 py-3 rounded-2xl transition">
-                            Chi tiết
-                        </button>
-                    </div>
-                </div>
-            </div>
+  </div>
 
-            <!-- BOOK 3 -->
-            <div class="book-card bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-sm border border-zinc-100 dark:border-zinc-800 group" data-category="tamly" data-price="79000" data-name="Tư Duy Tầng Lớp Dưới">
-                <div class="relative">
-                    <img src="https://picsum.photos/id/180/600/800" class="book-img w-full h-80 object-cover">
-                </div>
-                <div class="p-6">
-                    <div class="text-xs text-purple-600 font-medium mb-1">TÂM LÝ • PHÁT TRIỂN</div>
-                    <h3 class="font-semibold text-xl leading-tight mb-2">Tư Duy Tầng Lớp Dưới</h3>
-                    <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-6">Cách tư duy quyết định bạn thuộc tầng lớp nào.</p>
-                    <div class="flex items-end justify-between">
-                        <div>
-                            <span class="text-3xl font-bold">79.000</span>
-                            <span class="text-xs text-zinc-400">đ</span>
-                        </div>
-                        <button onclick="showBookModal(2)" 
-                                class="bg-zinc-900 hover:bg-black dark:bg-white dark:text-zinc-900 text-sm font-semibold px-6 py-3 rounded-2xl transition">
-                            Chi tiết
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- BOOK 4 -->
-            <div class="book-card bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-sm border border-zinc-100 dark:border-zinc-800 group" data-category="nhantinh" data-price="64000" data-name="Tình Cảm Bí Tịch">
-                <div class="relative">
-                    <img src="https://picsum.photos/id/251/600/800" class="book-img w-full h-80 object-cover">
-                </div>
-                <div class="p-6">
-                    <div class="text-xs text-rose-600 font-medium mb-1">TÌNH CẢM • NHÂN TÍNH</div>
-                    <h3 class="font-semibold text-xl leading-tight mb-2">Tình Cảm Bí Tịch</h3>
-                    <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-6">Những bí mật trong mối quan hệ nam nữ.</p>
-                    <div class="flex items-end justify-between">
-                        <div>
-                            <span class="text-3xl font-bold">64.000</span>
-                            <span class="text-xs text-zinc-400">đ</span>
-                        </div>
-                        <button onclick="showBookModal(3)" 
-                                class="bg-zinc-900 hover:bg-black dark:bg-white dark:text-zinc-900 text-sm font-semibold px-6 py-3 rounded-2xl transition">
-                            Chi tiết
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Thêm 8 cuốn nữa để dài và chi tiết -->
-            <!-- BOOK 5 -->
-            <div class="book-card bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-sm border border-zinc-100 dark:border-zinc-800 group" data-category="ngodao" data-price="129000" data-name="Xuyên Thấu Nhân Tính">
-                <div class="relative">
-                    <img src="https://picsum.photos/id/316/600/800" class="book-img w-full h-80 object-cover">
-                </div>
-                <div class="p-6">
-                    <div class="text-xs text-teal-600 font-medium mb-1">NGỘ ĐẠO • KỲ THƯ</div>
-                    <h3 class="font-semibold text-xl leading-tight mb-2">Xuyên Thấu Nhân Tính</h3>
-                    <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-6">Hiểu rõ bản chất con người qua 12 chương sâu sắc.</p>
-                    <div class="flex items-end justify-between">
-                        <div>
-                            <span class="text-3xl font-bold">129.000</span>
-                            <span class="text-xs text-zinc-400">đ</span>
-                        </div>
-                        <button onclick="showBookModal(4)" 
-                                class="bg-zinc-900 hover:bg-black dark:bg-white dark:text-zinc-900 text-sm font-semibold px-6 py-3 rounded-2xl transition">
-                            Chi tiết
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- BOOK 6 -->
-            <div class="book-card bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-sm border border-zinc-100 dark:border-zinc-800 group" data-category="taichinh" data-price="189000" data-name="Nghệ Thuật Làm Giàu">
-                <div class="relative">
-                    <img src="https://picsum.photos/id/367/600/800" class="book-img w-full h-80 object-cover">
-                </div>
-                <div class="p-6">
-                    <div class="text-xs text-amber-600 font-medium mb-1">TÀI CHÍNH</div>
-                    <h3 class="font-semibold text-xl leading-tight mb-2">Nghệ Thuật Làm Giàu Không Mất Tiền</h3>
-                    <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-6">Bí quyết đầu tư và tích lũy tài sản.</p>
-                    <div class="flex items-end justify-between">
-                        <div>
-                            <span class="text-3xl font-bold">189.000</span>
-                            <span class="text-xs text-zinc-400">đ</span>
-                        </div>
-                        <button onclick="showBookModal(5)" 
-                                class="bg-zinc-900 hover:bg-black dark:bg-white dark:text-zinc-900 text-sm font-semibold px-6 py-3 rounded-2xl transition">
-                            Chi tiết
-              
+</body>
+</html>
