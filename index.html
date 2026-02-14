@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tàng Thư Các • Sách cũ đẹp</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    body { background: #f9f0e6; }
+    .floral-bg { background: linear-gradient(rgba(248, 237, 227, 0.85), rgba(248, 237, 227, 0.85)), url('https://picsum.photos/id/1015/2000/1200') center/cover; }
+    .book-card { transition: all 0.4s; }
+    .book-card:hover { transform: translateY(-12px) scale(1.03); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+    .flower-corner { position: absolute; font-size: 60px; opacity: 0.15; pointer-events: none; }
+  </style>
+</head>
+<body class="font-light text-[#4a3f35]">
+
+  <!-- Navbar -->
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <span class="text-3xl">📖</span>
+        <h1 class="text-2xl font-bold tracking-wider" style="font-family: 'Playfair Display', serif;">TÀNG THƯ CÁC</h1>
+      </div>
+      <div class="flex gap-8 text-lg">
+        <a href="#" class="hover:text-[#d4a5a5]">Trang chủ</a>
+        <a href="#" class="hover:text-[#d4a5a5]">Danh sách sách</a>
+        <a href="#" class="hover:text-[#d4a5a5]">Về chúng mình</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="floral-bg h-screen flex items-center justify-center text-center relative overflow-hidden">
+    <div class="absolute top-10 left-10 flower-corner">🌸</div>
+    <div class="absolute bottom-10 right-10 flower-corner rotate-12">🌼</div>
+    <div class="max-w-2xl px-6">
+      <p class="text-[#a38a7e] text-xl mb-3 tracking-widest">SÁCH CŨ • SÁCH ĐẸP • SÁCH HAY</p>
+      <h2 class="text-6xl font-bold mb-6" style="font-family: 'Playfair Display', serif;">Tàng Thư Các</h2>
+      <p class="text-2xl text-[#6b5a4e]">Nơi những trang sách cũ tìm lại chủ nhân mới</p>
+      <button onclick="document.getElementById('books').scrollIntoView({behavior:'smooth'})"
+              class="mt-10 bg-[#e8b4bc] hover:bg-[#d4a5a5] text-white px-10 py-4 rounded-3xl text-xl font-medium transition">
+        Xem ngay danh sách sách →
+      </button>
+    </div>
+  </header>
+
+  <!-- Search -->
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <input id="search" type="text" placeholder="Tìm sách... (ví dụ: Kiều, Sapiens, Dế Mèn)" 
+           class="w-full max-w-xl mx-auto block border border-[#d4b8a8] focus:border-[#e8b4bc] rounded-3xl px-8 py-5 text-xl outline-none">
+  </div>
+
+  <!-- Book Grid -->
+  <section id="books" class="max-w-6xl mx-auto px-6 pb-20">
+    <h2 class="text-4xl font-bold text-center mb-12" style="font-family: 'Playfair Display', serif;">Danh sách sách đang có</h2>
+    
+    <div id="bookGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      
+      <!-- Card mẫu - copy cái này để thêm sách -->
+      <div class="book-card bg-white rounded-3xl overflow-hidden shadow-xl border border-[#f0e6d9]">
+        <div class="relative">
+          <img src="https://picsum.photos/id/201/600/800" class="w-full h-80 object-cover">
+          <div class="absolute top-4 right-4 bg-white/90 text-xs px-3 py-1 rounded-full font-medium">Còn 1 cuốn</div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-semibold text-xl mb-1">Truyện Kiều - Nguyễn Du</h3>
+          <p class="text-[#a38a7e] text-sm mb-3">Bản in 1975 • Gáy vải đẹp</p>
+          <p class="text-[#6b5a4e] line-clamp-3 text-sm mb-4">Bản in cũ rất đẹp, chữ rõ, giấy ngà, có minh họa.</p>
+          <div class="flex justify-between items-end">
+            <div>
+              <span class="text-3xl font-bold text-[#e8b4bc]">150.000</span><span class="text-sm">đ</span>
+            </div>
+            <a href="https://zalo.me/0123456789" target="_blank"
+               class="bg-[#e8b4bc] hover:bg-[#d4a5a5] text-white px-6 py-3 rounded-2xl text-sm font-medium">Hỏi mua Zalo</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thêm nhiều card nữa ở đây (copy từ trên xuống) -->
+      <!-- Ví dụ card 2 -->
+      <div class="book-card bg-white rounded-3xl overflow-hidden shadow-xl border border-[#f0e6d9]">
+        <div class="relative">
+          <img src="https://picsum.photos/id/29/600/800" class="w-full h-80 object-cover">
+        </div>
+        <div class="p-6">
+          <h3 class="font-semibold text-xl mb-1">Nhà Giả Kim - Paulo Coelho</h3>
+          <p class="text-[#a38a7e] text-sm mb-3">Bản dịch 2008 • Tình trạng 9/10</p>
+          <p class="text-[#6b5a4e] line-clamp-3 text-sm mb-4">Sách cũ còn rất mới, không gãy, không ố.</p>
+          <div class="flex justify-between items-end">
+            <div>
+              <span class="text-3xl font-bold text-[#e8b4bc]">95.000</span><span class="text-sm">đ</span>
+            </div>
+            <a href="https://zalo.me/0123456789" target="_blank" class="bg-[#e8b4bc] hover:bg-[#d4a5a5] text-white px-6 py-3 rounded-2xl text-sm font-medium">Hỏi mua Zalo</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3, 4, 5... cứ copy thêm -->
+      <!-- Mày thay ảnh, tên, giá, mô tả vào là xong -->
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#4a3f35] text-[#f0e6d9] py-12">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <p class="text-2xl mb-2">🌸 Tàng Thư Các 🌸</p>
+      <p>Sách cũ đẹp - Gửi đến tay bạn</p>
+      <p class="mt-8 text-sm opacity-70">Liên hệ Zalo: 0123 456 789 • Facebook: tangthucac.store</p>
+    </div>
+  </footer>
+
+  <script>
+    // Tìm kiếm sách
+    document.getElementById('search').addEventListener('input', function(e) {
+      const term = e.target.value.toLowerCase();
+      const cards = document.querySelectorAll('.book-card');
+      cards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        card.style.display = title.includes(term) ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+    </html>
