@@ -1,13 +1,12 @@
-```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CỪU NGỘ ĐẠO • CẤM THUẬT TỐI CAO</title>
-  <meta name="description" content="Cấm thuật nhân tính – kiến thức bị che giấu. Vũ khí tư duy để thấu hiểu lòng người, chấm dứt nạn nhân, thống trị trong bóng tối."/>
-  <meta property="og:title" content="Cừu Ngộ Đạo – Cấm Thuật Không Được Tiết Lộ"/>
-  <meta property="og:description" content="Xuyên thấu nhân tính. Thống trị im lặng. Kiến thức thay đổi vĩnh viễn."/>
+  <title>TÀNG THƯ CẤM • TOÀN BỘ CẤM THUẬT</title>
+  <meta name="description" content="Tàng thư cấm – nơi lưu trữ toàn bộ cấm thuật nhân tính tối cao. Sở hữu vĩnh viễn bộ sưu tập đầy đủ với giá 1.400.000 ₫ – kiến thức không thể quay đầu."/>
+  <meta property="og:title" content="Tàng Thư Cấm – Toàn Bộ Cấm Thuật"/>
+  <meta property="og:description" content="Bộ sưu tập cấm thuật toàn tập – 1.400.000 ₫. Sở hữu vĩnh viễn."/>
   <meta property="og:image" content="https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=1200&auto=format&fit=crop&q=80"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,16 +15,16 @@
   <style>
     :root {
       --bg: #000000;
-      --card: rgba(5,5,5,0.85);
-      --text: #d4c9a8;
-      --accent: #b89b4a;
-      --accent-glow: #e0c870;
-      --red: #6b0000;
-      --gradient: radial-gradient(ellipse at 40% 10%, #1f1800 0%, #000000 80%);
-      --shadow-deep: 0 35px 90px rgba(0,0,0,0.99);
-      --glow-intense: 0 0 55px rgba(184,155,74,0.42);
-      --blur-heavy: blur(20px);
-      --neon-glow: 0 0 15px rgba(184,155,74,0.6), 0 0 30px rgba(184,155,74,0.4);
+      --card: rgba(3,3,3,0.88);
+      --text: #d2c49e;
+      --accent: #b08f3e;
+      --accent-glow: #d9bf6a;
+      --red: #550000;
+      --gradient: radial-gradient(ellipse at 50% 0%, #2a1a00 0%, #000000 85%);
+      --shadow-deep: 0 40px 100px rgba(0,0,0,1);
+      --glow-intense: 0 0 65px rgba(176,143,62,0.45);
+      --blur-heavy: blur(24px);
+      --neon-glow: 0 0 20px rgba(176,143,62,0.7), 0 0 40px rgba(176,143,62,0.5);
     }
 
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -34,7 +33,7 @@
       background: var(--gradient);
       color: var(--text);
       min-height: 100vh;
-      line-height: 1.85;
+      line-height: 1.9;
       overflow-x: hidden;
       background-attachment: fixed;
     }
@@ -42,318 +41,173 @@
     .parallax-bg {
       position: fixed;
       inset: 0;
-      background: url('https://images.unsplash.com/photo-1557683316-973673baf926?w=3000&auto=format&fit=crop&q=15&blend=000000&blend-mode=multiply') center/cover no-repeat fixed;
+      background: url('https://images.unsplash.com/photo-1557683316-973673baf926?w=3000&auto=format&fit=crop&q=10&blend=000000&blend-mode=multiply') center/cover no-repeat fixed;
       z-index: -3;
-      opacity: 0.1;
-      transform: translateZ(0);
+      opacity: 0.08;
     }
 
     .overlay {
       position: fixed;
       inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.95) 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.97) 100%);
       z-index: -2;
     }
 
     .container {
-      max-width: 680px;
+      max-width: 720px;
       margin: 0 auto;
-      padding: 120px 36px 180px;
+      padding: 140px 40px 200px;
       position: relative;
-      z-index: 3;
-    }
-
-    header {
+      z-index: 4;
       text-align: center;
-      margin-bottom: 130px;
-      position: relative;
     }
 
-    .avatar-container {
-      position: relative;
-      width: 220px;
-      height: 220px;
-      margin: 0 auto 60px;
-    }
-
-    .avatar {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      border: 12px double var(--accent);
-      box-shadow: var(--glow-intense), var(--neon-glow), inset 0 0 60px rgba(184,155,74,0.3);
-      object-fit: cover;
-      transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.475);
-    }
-
-    .avatar:hover {
-      transform: scale(1.2) rotate(12deg);
-      box-shadow: 0 0 120px rgba(184,155,74,0.9), var(--neon-glow), inset 0 0 70px rgba(184,155,74,0.5);
-    }
-
-    .ring-orbit {
-      position: absolute;
-      inset: -35px;
-      border: 2px dashed var(--accent);
-      border-radius: 50%;
-      animation: orbit 50s linear infinite;
-      opacity: 0.28;
-    }
-
-    .ring-orbit:nth-child(2) {
-      inset: -55px;
-      animation-duration: 80s;
-      opacity: 0.18;
-    }
-
-    @keyframes orbit {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-
-    h1 {
+    .seal {
       font-family: 'UnifrakturMaguntia', cursive;
-      font-size: 6.5rem;
+      font-size: 8rem;
       background: linear-gradient(90deg, var(--accent), var(--accent-glow), #f0d47a, var(--accent-glow), var(--accent));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 10px 35px rgba(184,155,74,0.55);
-      letter-spacing: 10px;
-      margin-bottom: 24px;
-      animation: subtle-pulse 8s infinite alternate;
-    }
-
-    @keyframes subtle-pulse {
-      0% { opacity: 0.95; }
-      100% { opacity: 1; }
-    }
-
-    .tagline {
-      font-family: 'IM Fell English SC', serif;
-      font-size: 2.1rem;
-      opacity: 0.92;
-      font-style: italic;
-      margin-bottom: 36px;
-      letter-spacing: 2.5px;
-      text-shadow: 0 3px 12px rgba(0,0,0,0.95);
-    }
-
-    .bio {
-      font-size: 1.3rem;
-      max-width: 600px;
-      margin: 0 auto 80px;
-      opacity: 0.95;
-      letter-spacing: 0.8px;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.9);
-    }
-
-    .warning {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
-      color: var(--red);
-      text-align: center;
-      margin: 50px 0 100px;
-      letter-spacing: 2px;
-      font-weight: 800;
-      text-shadow: 0 0 20px rgba(107,0,0,0.7);
-      animation: pulse-red 4s infinite;
-    }
-
-    @keyframes pulse-red {
-      0%, 100% { opacity: 0.8; }
-      50% { opacity: 1; }
-    }
-
-    .categories {
-      margin: 100px 0;
-    }
-
-    .category-title {
-      font-family: 'Cinzel Decorative', serif;
-      font-size: 3rem;
-      color: var(--accent);
-      text-align: center;
-      margin: 100px 0 50px;
-      letter-spacing: 5px;
-      position: relative;
-    }
-
-    .category-title::after {
-      content: '';
-      position: absolute;
-      bottom: -20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 220px;
-      height: 4px;
-      background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
-      box-shadow: 0 0 30px var(--glow-intense);
-    }
-
-    .products {
-      display: grid;
-      gap: 40px;
-    }
-
-    .product {
-      background: var(--card);
-      backdrop-filter: var(--blur-heavy);
-      -webkit-backdrop-filter: var(--blur-heavy);
-      border-radius: 32px;
-      overflow: hidden;
-      border: 1px solid rgba(184,155,74,0.2);
-      box-shadow: var(--shadow-deep), inset 0 0 20px rgba(184,155,74,0.08);
-      transition: all 0.8s cubic-bezier(0.23,1,0.32,1);
-      position: relative;
-    }
-
-    .product:hover {
-      transform: translateY(-32px) scale(1.04);
-      box-shadow: 0 60px 130px rgba(0,0,0,1), var(--neon-glow), inset 0 0 30px rgba(184,155,74,0.2);
-      border-color: rgba(184,155,74,0.7);
-    }
-
-    .product-featured::before {
-      content: "CẤM THUẬT TỐI CAO";
-      position: absolute;
-      top: 32px;
-      right: -80px;
-      background: var(--red);
-      color: white;
-      padding: 14px 90px;
-      font-size: 1.1rem;
-      font-weight: 900;
-      transform: rotate(45deg);
-      z-index: 2;
-      box-shadow: 0 10px 25px rgba(107,0,0,0.8);
-    }
-
-    .product-content {
-      padding: 48px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .product-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.7rem;
-      color: var(--accent);
-      margin-bottom: 18px;
-      letter-spacing: 1.8px;
-    }
-
-    .product-price {
-      font-size: 3.2rem;
-      font-weight: 900;
-      color: var(--red);
-      margin-bottom: 32px;
-      text-shadow: 0 5px 15px rgba(107,0,0,0.7);
-    }
-
-    .product-actions {
-      display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      flex: 1;
-      min-width: 200px;
-      padding: 22px 44px;
-      border-radius: 999px;
-      font-weight: 900;
-      text-align: center;
-      text-decoration: none;
-      transition: all 0.7s ease;
-      font-size: 1.2rem;
-      position: relative;
-      overflow: hidden;
-      border: none;
-      cursor: pointer;
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -180%;
-      width: 180%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
-      transition: left 1.2s;
-    }
-
-    .btn:hover::before { left: 180%; }
-
-    .btn-buy {
-      background: linear-gradient(135deg, var(--accent), var(--accent-glow), #f0d47a);
-      color: #000;
-      box-shadow: 0 12px 35px rgba(184,155,74,0.8), var(--neon-glow);
-    }
-
-    .btn-buy:hover {
-      transform: translateY(-7px);
-      box-shadow: 0 25px 60px rgba(184,155,74,1), var(--neon-glow);
-    }
-
-    .btn-preview {
-      background: rgba(184,155,74,0.15);
-      color: var(--accent);
-      border: 3.5px solid var(--accent);
-      box-shadow: inset 0 0 15px rgba(184,155,74,0.3);
-    }
-
-    .btn-preview:hover {
-      background: rgba(184,155,74,0.35);
-      transform: translateY(-7px);
-    }
-
-    .bundle {
-      margin: 140px 0;
-      text-align: center;
-    }
-
-    .bundle-title {
-      font-family: 'Cinzel Decorative', serif;
-      font-size: 3.8rem;
-      color: var(--accent-glow);
+      text-shadow: 0 12px 40px rgba(176,143,62,0.6);
+      letter-spacing: 12px;
       margin-bottom: 30px;
-      letter-spacing: 6px;
-      text-shadow: 0 0 40px rgba(224,200,112,0.5);
+      animation: pulse-seal 10s infinite alternate;
     }
 
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 60px;
-      margin: 120px 0 70px;
+    @keyframes pulse-seal {
+      0% { opacity: 0.92; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.02); }
     }
 
-    .social-icon {
-      font-size: 3.5rem;
-      color: var(--text);
-      transition: all 0.7s;
-    }
-
-    .social-icon:hover {
-      color: var(--accent);
-      transform: scale(1.6) rotate(25deg);
+    .title-main {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 4.5rem;
+      color: var(--accent-glow);
+      margin: 40px 0 20px;
+      letter-spacing: 8px;
       text-shadow: 0 0 50px var(--glow-intense);
     }
 
+    .subtitle {
+      font-family: 'IM Fell English SC', serif;
+      font-size: 2.4rem;
+      opacity: 0.94;
+      font-style: italic;
+      margin-bottom: 40px;
+      letter-spacing: 3px;
+    }
+
+    .warning {
+      font-size: 1.8rem;
+      color: var(--red);
+      margin: 60px 0 100px;
+      font-weight: 900;
+      letter-spacing: 2.5px;
+      text-shadow: 0 0 25px rgba(85,0,0,0.8);
+      animation: pulse-red 5s infinite;
+    }
+
+    @keyframes pulse-red {
+      0%, 100% { opacity: 0.75; }
+      50% { opacity: 1; }
+    }
+
+    .bundle-card {
+      background: var(--card);
+      backdrop-filter: var(--blur-heavy);
+      -webkit-backdrop-filter: var(--blur-heavy);
+      border-radius: 40px;
+      border: 2px solid rgba(176,143,62,0.25);
+      box-shadow: var(--shadow-deep), var(--neon-glow), inset 0 0 30px rgba(176,143,62,0.12);
+      padding: 80px 60px;
+      max-width: 600px;
+      margin: 0 auto 80px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.9s cubic-bezier(0.23,1,0.32,1);
+    }
+
+    .bundle-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 70px 150px rgba(0,0,0,1), 0 0 100px rgba(176,143,62,0.6);
+      border-color: rgba(176,143,62,0.8);
+    }
+
+    .ribbon {
+      position: absolute;
+      top: 40px;
+      right: -120px;
+      background: var(--red);
+      color: white;
+      padding: 15px 140px;
+      font-size: 1.3rem;
+      font-weight: 900;
+      transform: rotate(45deg);
+      z-index: 1;
+      box-shadow: 0 12px 30px rgba(85,0,0,0.9);
+    }
+
+    .price {
+      font-size: 5rem;
+      font-weight: 900;
+      color: var(--red);
+      margin: 40px 0;
+      text-shadow: 0 6px 20px rgba(85,0,0,0.8);
+    }
+
+    .btn-buy {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent), var(--accent-glow), #f0d47a);
+      color: #000;
+      padding: 28px 80px;
+      border-radius: 999px;
+      font-size: 1.6rem;
+      font-weight: 900;
+      text-decoration: none;
+      box-shadow: 0 15px 40px rgba(176,143,62,0.9), var(--neon-glow);
+      transition: all 0.8s ease;
+      margin-top: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-buy::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -200%;
+      width: 200%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+      transition: left 1.5s;
+    }
+
+    .btn-buy:hover::before { left: 200%; }
+
+    .btn-buy:hover {
+      transform: translateY(-10px) scale(1.08);
+      box-shadow: 0 30px 70px rgba(176,143,62,1.2), var(--neon-glow);
+    }
+
+    .eternal {
+      font-size: 2rem;
+      color: var(--accent-glow);
+      margin-top: 30px;
+      letter-spacing: 4px;
+    }
+
     footer {
-      text-align: center;
-      font-size: 1.1rem;
-      opacity: 0.82;
-      padding: 70px 0;
-      border-top: 1px solid rgba(184,155,74,0.18);
+      font-size: 1.2rem;
+      opacity: 0.85;
+      padding: 80px 0;
+      border-top: 1px solid rgba(176,143,62,0.2);
     }
 
     @media (max-width: 480px) {
-      h1 { font-size: 4.8rem; }
-      .avatar-container { width: 180px; height: 180px; }
-      .container { padding: 80px 28px 140px; }
-      .product-title { font-size: 2.3rem; }
-      .product-price { font-size: 2.8rem; }
-      .btn { padding: 18px 36px; font-size: 1.1rem; }
+      .seal { font-size: 5rem; }
+      .title-main { font-size: 3.2rem; }
+      .subtitle { font-size: 1.8rem; }
+      .bundle-card { padding: 60px 40px; }
+      .price { font-size: 4rem; }
+      .btn-buy { padding: 22px 60px; font-size: 1.4rem; }
     }
   </style>
 </head>
@@ -364,124 +218,24 @@
 
   <div class="container">
 
-    <header>
-      <div class="avatar-container">
-        <div class="ring-orbit"></div>
-        <div class="ring-orbit"></div>
-        <img src="https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800&auto=format&fit=crop&q=90" alt="Cừu Ngộ Đạo" class="avatar"/>
-      </div>
-      <h1>CỪU NGỘ ĐẠO</h1>
-      <div class="tagline">ᶻ 𝗓 𐰁 • Cấm Thuật Tối Cao</div>
-      <p class="bio">Kiến thức bị cấm đoán vĩnh viễn – không trường lớp, không sách vở nào dám truyền đạt.<br>Vũ khí tư duy sắc bén để nhìn thấu tâm can, kết thúc kiếp nạn nhân, bước vào vị thế thống trị.</p>
-      <div class="warning">CẢNH BÁO: Một khi tiếp xúc, nhận thức của bạn sẽ thay đổi mãi mãi – không thể quay lại.</div>
-    </header>
+    <div class="seal">CẤM</div>
 
-    <div class="categories">
+    <h1 class="title-main">TOÀN BỘ CẤM THUẬT</h1>
+    <div class="subtitle">TÀNG THƯ CẤM • BỘ SƯU TẬP TOÀN TẬP</div>
 
-      <div class="category-title">XUYÊN THẤU NHÂN TÍNH</div>
-      <div class="products">
-        <div class="product product-featured">
-          <div class="product-content">
-            <div class="product-title">BẢO ĐIỂN NHÂN TÍNH + AUDIO</div>
-            <div class="product-price">109.000 ₫</div>
-            <div class="product-actions">
-              <a href="#" class="btn btn-buy">MUA NGAY</a>
-              <a href="#" class="btn btn-preview">NGHE THỬ AUDIO</a>
-            </div>
-          </div>
-        </div>
+    <div class="warning">CẢNH BÁO: Kiến thức này thay đổi vĩnh viễn nhận thức của bạn – không thể quay đầu.</div>
 
-        <div class="product">
-          <div class="product-content">
-            <div class="product-title">NHÂN TÍNH ĐEN VÀ TRẮNG</div>
-            <div class="product-price">99.000 ₫</div>
-            <div class="product-actions">
-              <a href="#" class="btn btn-buy">MUA NGAY</a>
-              <a href="#" class="btn btn-preview">ĐỌC THỬ</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="product">
-          <div class="product-content">
-            <div class="product-title">XUYÊN THẤU NHÂN TÍNH</div>
-            <div class="product-price">69.000 ₫</div>
-            <div class="product-actions">
-              <a href="#" class="btn btn-buy">MUA NGAY</a>
-              <a href="#" class="btn btn-preview">ĐỌC THỬ</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="product">
-          <div class="product-content">
-            <div class="product-title">TUYỆT MẬT NHÂN TÍNH</div>
-            <div class="product-price">69.000 ₫</div>
-            <div class="product-actions">
-              <a href="#" class="btn btn-buy">MUA NGAY</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="category-title">MƯU LƯỢC & THỨC TỈNH</div>
-      <div class="products">
-        <div class="product">
-          <div class="product-content">
-            <div class="product-title">VINH KHÔ DÁM - TIỂU NHÂN KINH</div>
-            <div class="product-price">59.000 ₫</div>
-            <div class="product-actions">
-              <a href="#" class="btn btn-buy">MUA NGAY</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="product">
-          <div class="product-content">
-            <div class="product-title">NHÂN TÍNH XÃ GIAO</div>
-            <div class="product-price">59.000 ₫</div>
-            <div class="product-actions">
-              <a href="#" class="btn btn-buy">MUA NGAY</a>
-              <a href="#" class="btn btn-preview">ĐỌC THỬ</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="product">
-          <div class="product-content">
-            <div class="product-title">TƯ DUY TẦNG LỚP DƯỚI</div>
-            <div class="product-price">79.000 ₫</div>
-            <div class="product-actions">
-              <a href="#" class="btn btn-buy">MUA NGAY</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="bundle">
-      <div class="bundle-title">TOÀN BỘ CẤM THUẬT</div>
-      <div class="product product-featured" style="max-width: 540px; margin: 50px auto;">
-        <div class="product-content">
-          <div class="product-title">BỘ SƯU TẬP CẤM THUẬT TOÀN TẬP</div>
-          <div class="product-price">1.400.000 ₫</div>
-          <div class="product-actions">
-            <a href="#" class="btn btn-buy">SỞ HỮU VĨNH VIỄN</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="social-links">
-      <a href="https://tiktok.com/@cuungodao" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
-      <a href="#" target="_blank" class="social-icon"><i class="fab fa-telegram-plane"></i></a>
-      <a href="#" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+    <div class="bundle-card">
+      <div class="ribbon">CẤM THUẬT TỐI CAO</div>
+      <h2 class="title-main" style="font-size: 3.5rem; margin: 0;">BỘ SƯU TẬP CẤM THUẬT TOÀN TẬP</h2>
+      <div class="price">1.400.000 ₫</div>
+      <a href="#" class="btn-buy">SỞ HỮU VĨNH VIỄN</a>
+      <div class="eternal">SỞ HỮU VĨNH VIỄN</div>
     </div>
 
     <footer>
-      © 2026 CỪU NGỘ ĐẠO • Nơi lưu giữ những cấm thuật tối cao – không bao giờ được phép công khai.<br>
-      Liên hệ bí mật: @cuungodao | Đọc xong, bạn sẽ không còn như trước nữa.
+      © 2026 TÀNG THƯ CẤM • Nơi cất giữ toàn bộ cấm thuật – không bao giờ được phép lan truyền.<br>
+      Liên hệ bí mật: @cuungodao | Một khi sở hữu, bạn đã bước vào bóng tối vĩnh cửu.
     </footer>
 
   </div>
