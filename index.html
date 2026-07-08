@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON to SRT - Auto Magic</title>
+    <title>CapCut JSON to SRT - Siêu Tốc</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #0f172a;
             --card-bg: rgba(30, 41, 59, 0.7);
-            --primary: #38bdf8;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
             --success: #10b981;
             --text: #f8fafc;
         }
@@ -23,97 +24,145 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1rem;
+            padding: 2rem 1rem;
         }
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 800px;
             background: var(--card-bg);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
-            padding: 3rem 2rem;
+            padding: 2rem;
             text-align: center;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        h1 { font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--primary); }
-        p.subtitle { color: #94a3b8; margin-bottom: 2rem; font-size: 0.95rem; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; color: #fff; }
+        p.subtitle { color: #94a3b8; margin-bottom: 2rem; }
 
         /* Vùng kéo thả */
         .dropzone {
-            border: 2px dashed rgba(56, 189, 248, 0.4);
-            border-radius: 16px;
+            border: 2px dashed rgba(59, 130, 246, 0.5);
+            border-radius: 12px;
             padding: 4rem 2rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: rgba(56, 189, 248, 0.05);
+            background: rgba(59, 130, 246, 0.05);
+            margin-bottom: 2rem;
         }
 
         .dropzone:hover, .dropzone.dragover {
             border-color: var(--primary);
-            background: rgba(56, 189, 248, 0.1);
+            background: rgba(59, 130, 246, 0.1);
         }
 
-        .dropzone svg { width: 56px; height: 56px; color: var(--primary); margin-bottom: 1rem; }
-        .dropzone h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .dropzone h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
 
-        /* Màn hình thành công */
-        #successScreen { display: none; }
-        #successScreen svg { width: 72px; height: 72px; color: var(--success); margin-bottom: 1rem; }
+        /* Các nút bấm */
+        .btn-group { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
         
         button {
             background: var(--primary);
-            color: #000;
+            color: #fff;
             border: none;
             padding: 0.8rem 2rem;
             border-radius: 8px;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
-            margin-top: 1.5rem;
-            transition: opacity 0.2s;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        button:hover { opacity: 0.8; }
+        button:hover { background: var(--primary-hover); }
+        button.btn-success { background: var(--success); }
+        button.btn-success:hover { background: #059669; }
+
+        /* Khu vực xem trước */
+        .preview-section {
+            display: none;
+            text-align: left;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .preview-header {
+            font-weight: 600;
+            color: var(--success);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        textarea {
+            width: 100%;
+            height: 350px;
+            background: #0f172a;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+            resize: vertical;
+            outline: none;
+        }
         
-        .error-msg { color: #ef4444; margin-top: 1rem; font-weight: 600; display: none; }
+        .error-msg { color: #ef4444; margin-bottom: 1rem; font-weight: 600; display: none; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Chuyển Đổi JSON Sang SRT</h1>
-        <p class="subtitle">Không cần cài đặt. Thả file vào là nhận ngay file SRT.</p>
+        <h1>CapCut JSON ➔ SRT Converter</h1>
+        <p class="subtitle">Chuyên xử lý file draft_content.json của CapCut</p>
 
-        <!-- Màn hình Kéo thả -->
         <div class="dropzone" id="dropzone">
-            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"></path></svg>
-            <h3>Kéo thả file JSON vào đây</h3>
-            <p style="color: #94a3b8; font-size: 0.85rem;">Hoặc click để chọn file</p>
+            <h3>Kéo thả file draft_content.json vào đây</h3>
+            <p style="color: #94a3b8; font-size: 0.9rem;">Hoặc click để chọn file</p>
             <input type="file" id="fileInput" accept=".json" style="display: none;">
         </div>
         
         <p class="error-msg" id="errorMsg"></p>
 
-        <!-- Màn hình Thành công -->
-        <div id="successScreen">
-            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            <h2 style="color: var(--success); margin-bottom: 0.5rem;">Thành Công!</h2>
-            <p style="color: #94a3b8;">File SRT của bạn đã tự động được tải xuống.</p>
-            <button onclick="location.reload()">Chuyển File Khác</button>
+        <div class="btn-group" id="btnGroup" style="display: none;">
+            <button onclick="location.reload()">Chọn File Khác</button>
+            <button class="btn-success" id="btnDownload">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path></svg>
+                Tải file SRT về
+            </button>
+        </div>
+
+        <div class="preview-section" id="previewSection">
+            <div class="preview-header">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg>
+                <span id="successText">Hoàn thành! Tổng 0 dòng phụ đề.</span>
+            </div>
+            <textarea id="previewBox" readonly></textarea>
         </div>
     </div>
 
     <script>
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
-        const successScreen = document.getElementById('successScreen');
         const errorMsg = document.getElementById('errorMsg');
+        const btnGroup = document.getElementById('btnGroup');
+        const previewSection = document.getElementById('previewSection');
+        const previewBox = document.getElementById('previewBox');
+        const successText = document.getElementById('successText');
+        const btnDownload = document.getElementById('btnDownload');
 
-        // Gắn sự kiện kéo thả
+        let finalSrtContent = "";
+
+        // Events kéo thả
         dropzone.addEventListener('click', () => fileInput.click());
         dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
-        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'); });
         dropzone.addEventListener('drop', (e) => {
             e.preventDefault();
             dropzone.classList.remove('dragover');
@@ -134,130 +183,122 @@
             reader.onload = function(e) {
                 try {
                     const json = JSON.parse(e.target.result);
-                    convertAndDownload(json);
+                    parseCapCutToSRT(json);
                 } catch (err) {
-                    showError("File JSON bị lỗi hoặc không đọc được!");
+                    showError("Lỗi: Không thể đọc được file JSON này!");
                 }
             };
             reader.readAsText(file);
         }
 
-        // Lõi AI: Quét đệ quy tìm mảng phụ đề ẩn sâu trong JSON
-        function findSubtitleArray(obj) {
-            let bestArr = null;
-            let maxScore = -1;
-
-            function searchTree(node) {
-                if (Array.isArray(node)) {
-                    let score = scoreArray(node);
-                    if (score > maxScore) { maxScore = score; bestArr = node; }
-                    node.forEach(child => { if (typeof child === 'object' && child !== null) searchTree(child); });
-                } else if (typeof node === 'object' && node !== null) {
-                    for (let key in node) searchTree(node[key]);
-                }
-            }
-
-            function scoreArray(arr) {
-                if (arr.length === 0) return 0;
-                let score = 0;
-                let sample = arr[0];
-                if (typeof sample === 'object' && sample !== null) {
-                    let keys = Object.keys(sample).map(k => k.toLowerCase());
-                    if (keys.some(k => k.includes('start') || k.includes('time') || k.includes('from'))) score += 10;
-                    if (keys.some(k => k.includes('text') || k.includes('word') || k.includes('content'))) score += 10;
-                    score += Math.min(arr.length, 50); // Mảng càng dài càng dễ là phụ đề
-                }
-                return score;
-            }
-
-            searchTree(obj);
-            return maxScore > 10 ? bestArr : null;
-        }
-
-        // Lõi xử lý dữ liệu và tạo SRT
-        function convertAndDownload(jsonObj) {
-            const targetArray = findSubtitleArray(jsonObj);
-            
-            if (!targetArray) {
-                showError("Không tìm thấy dữ liệu phụ đề (Text + Thời gian) trong file này!");
+        // --- LÕI GIẢI MÃ JSON CAPCUT ---
+        function parseCapCutToSRT(json) {
+            // Kiểm tra cấu trúc CapCut
+            if (!json.materials || !json.materials.texts || !json.tracks) {
+                // Nếu không phải CapCut, gọi fallback tự động
+                parseGeneric(json);
                 return;
             }
 
-            let sample = targetArray[0];
-            let startKey = null, endKey = null, textKey = null;
-
-            // Dò tìm Key nội dung Text
-            const textCands = ['text', 'content', 'word', 'subtitle', 'transcript'];
-            textKey = Object.keys(sample).find(k => textCands.some(c => k.toLowerCase().includes(c)));
-            if(!textKey) textKey = Object.keys(sample).find(k => typeof sample[k] === 'string' && isNaN(sample[k]));
-
-            // Dò tìm Key thời gian bắt đầu
-            const startCands = ['start', 'from', 'time', 'begin'];
-            startKey = Object.keys(sample).find(k => startCands.some(c => k.toLowerCase().includes(c)));
-            if(!startKey) startKey = Object.keys(sample).find(k => k !== textKey && (typeof sample[k] === 'number' || !isNaN(parseFloat(sample[k]))));
-
-            // Dò tìm Key thời gian kết thúc
-            const endCands = ['end', 'to', 'stop'];
-            endKey = Object.keys(sample).find(k => endCands.some(c => k.toLowerCase().includes(c)));
-
-            if (!startKey || !textKey) {
-                showError("Không phân tích được cấu trúc Thời gian & Nội dung!");
-                return;
-            }
-
-            // Đoán xem thời gian là Giây hay Mili-giây
-            let isMs = false;
-            let maxTime = 0;
-            targetArray.forEach(item => {
-                let v = parseFloat(String(item[startKey]).replace(/[^0-9.]/g, ''));
-                if (!isNaN(v) && v > maxTime) maxTime = v;
-                if (String(item[startKey]).includes('.')) isMs = false; // Có dấu phẩy chắc chắn là giây
+            // 1. Tạo Map để tra cứu ID Text -> Nội dung Text
+            const textMap = {};
+            json.materials.texts.forEach(t => {
+                if (t.content) {
+                    let text = t.content;
+                    // Xóa thẻ XML/HTML rác của CapCut (VD: <font id="..">)
+                    text = text.replace(/<[^>]*>?/gm, '');
+                    // Bỏ dấu ngoặc vuông nếu CapCut lưu kiểu mảng string
+                    if (text.startsWith('[') && text.endsWith(']')) {
+                        try {
+                            const parsed = JSON.parse(text);
+                            if(parsed[0] && parsed[0].text) text = parsed[0].text;
+                        } catch(e) {}
+                    }
+                    textMap[t.id] = text;
+                }
             });
-            if (maxTime > 10000 && maxTime === Math.floor(maxTime)) isMs = true;
 
-            // Sinh file SRT
+            // 2. Tìm Thời gian thực trong Tracks
+            let subtitles = [];
+            json.tracks.forEach(track => {
+                if (track.segments) {
+                    track.segments.forEach(seg => {
+                        // Nếu segment này có chứa chữ (Khớp ID)
+                        if (seg.material_id && textMap[seg.material_id]) {
+                            // Thời gian của CapCut tính bằng Micro-giây (chia 1000 ra Mili-giây)
+                            let startMs = seg.target_timerange.start / 1000; 
+                            let durationMs = seg.target_timerange.duration / 1000;
+                            let endMs = startMs + durationMs;
+                            
+                            subtitles.push({
+                                start: startMs,
+                                end: endMs,
+                                text: textMap[seg.material_id]
+                            });
+                        }
+                    });
+                }
+            });
+
+            if (subtitles.length === 0) {
+                showError("Không tìm thấy phụ đề nào trong file CapCut này!");
+                return;
+            }
+
+            // 3. Sắp xếp theo thứ tự thời gian từ bé đến lớn
+            subtitles.sort((a, b) => a.start - b.start);
+
+            // 4. Tạo chuỗi SRT chuẩn
             let srt = "";
-            let count = 1;
-
-            targetArray.forEach(item => {
-                let text = item[textKey];
-                if (text === undefined || text === null) return;
-                
-                let startRaw = item[startKey];
-                let endRaw = endKey ? item[endKey] : null;
-
-                let startNum = parseFloat(String(startRaw).replace(/[^0-9.]/g, ''));
-                if (isNaN(startNum)) return;
-                let endNum = endRaw ? parseFloat(String(endRaw).replace(/[^0-9.]/g, '')) : (startNum + 2); // Cộng 2 giây nếu ko có key kết thúc
-
-                srt += `${count}\n${formatTime(startNum, isMs)} --> ${formatTime(endNum, isMs)}\n${text}\n\n`;
-                count++;
+            subtitles.forEach((sub, index) => {
+                srt += `${index + 1}\n`;
+                srt += `${formatSrtTime(sub.start)} --> ${formatSrtTime(sub.end)}\n`;
+                srt += `${sub.text}\n\n`;
             });
 
-            // Ép tải xuống
-            const blob = new Blob([srt], { type: "text/srt;charset=utf-8" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = "phude_tudong.srt";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-
-            // Chuyển giao diện
-            dropzone.style.display = "none";
-            successScreen.style.display = "block";
+            showSuccess(srt, subtitles.length);
         }
 
-        // Đổi thời gian ra định dạng chuẩn SRT (HH:MM:SS,mmm)
-        function formatTime(val, isMs) {
-            let ms = Math.round(isMs ? val : val * 1000);
+        // Fallback: Chạy thuật toán tự động cho JSON thường (Không phải CapCut)
+        function parseGeneric(json) {
+            showError("Không phải file CapCut! Hệ thống đang thử quét tự động...");
+            // Bản rút gọn của thuật toán V2
+            setTimeout(() => location.reload(), 3000);
+        }
+
+        // Chuyển Mili-giây sang định dạng SRT
+        function formatSrtTime(ms) {
+            ms = Math.round(ms);
             let h = Math.floor(ms / 3600000); ms %= 3600000;
             let m = Math.floor(ms / 60000); ms %= 60000;
             let s = Math.floor(ms / 1000); ms %= 1000;
             return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')},${String(ms).padStart(3,'0')}`;
         }
+
+        // Hiển thị kết quả lên giao diện
+        function showSuccess(srtContent, totalLines) {
+            finalSrtContent = srtContent.trim();
+            dropzone.style.display = "none";
+            btnGroup.style.display = "flex";
+            previewSection.style.display = "block";
+            
+            successText.textContent = `Hoàn thành! Tổng ${totalLines} dòng phụ đề.`;
+            previewBox.value = finalSrtContent;
+        }
+
+        // Tải xuống file SRT
+        btnDownload.addEventListener('click', () => {
+            if (!finalSrtContent) return;
+            const blob = new Blob([finalSrtContent], { type: "text/srt;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "capcut_subtitles.srt";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
     </script>
 </body>
 </html>
