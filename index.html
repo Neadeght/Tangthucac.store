@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate JSON ➔ SRT Converter</title>
+    <title>CapCut JSON ➔ SRT (Universal Version)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -12,7 +12,6 @@
             --primary: #3b82f6;
             --primary-hover: #2563eb;
             --success: #10b981;
-            --success-hover: #059669;
             --text: #f8fafc;
             --border: #334155;
         }
@@ -27,171 +26,79 @@
             align-items: center;
             justify-content: center;
             padding: 2rem;
-            background-image: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent 400px),
-                              radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.1), transparent 400px);
         }
 
         .container {
             width: 100%;
             max-width: 900px;
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(16px);
+            background: rgba(30, 41, 59, 0.8);
             border: 1px solid var(--border);
-            border-radius: 24px;
+            border-radius: 20px;
             padding: 2.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
-        h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 700; color: #ffffff; }
-        p.subtitle { color: #94a3b8; margin-bottom: 2rem; font-size: 1rem; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; color: #fff; }
+        p.subtitle { color: #94a3b8; margin-bottom: 2rem; }
 
-        /* Vùng kéo thả file */
         .dropzone {
-            border: 2px dashed rgba(59, 130, 246, 0.4);
-            border-radius: 16px;
-            padding: 4rem 2rem;
+            border: 2px dashed rgba(59, 130, 246, 0.5);
+            border-radius: 12px;
+            padding: 3rem 2rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: rgba(59, 130, 246, 0.03);
+            background: rgba(59, 130, 246, 0.05);
             margin-bottom: 1.5rem;
         }
 
-        .dropzone:hover, .dropzone.dragover {
-            border-color: var(--primary);
-            background: rgba(59, 130, 246, 0.08);
-            transform: translateY(-2px);
-        }
+        .dropzone:hover { border-color: var(--primary); background: rgba(59, 130, 246, 0.1); }
+        .dropzone h3 { margin-bottom: 0.5rem; color: #fff; }
 
-        .dropzone svg { width: 64px; height: 64px; color: var(--primary); margin-bottom: 1rem; }
-        .dropzone h3 { font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 600; }
-        .dropzone p { color: #94a3b8; font-size: 0.9rem; }
-
-        /* Vùng kết quả */
-        .result-section {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
+        .result-section { display: none; }
         .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(16, 185, 129, 0.2);
+            display: inline-block; background: rgba(16, 185, 129, 0.15); color: var(--success);
+            padding: 0.5rem 1.5rem; border-radius: 50px; font-weight: 600; margin-bottom: 1rem; border: 1px solid var(--success);
         }
 
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
+        .btn-group { display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem; }
+        button { border: none; padding: 0.8rem 2rem; border-radius: 8px; font-weight: 600; cursor: pointer; color: #fff; }
+        .btn-secondary { background: #334155; }
+        .btn-primary { background: var(--success); }
+        button:hover { opacity: 0.8; }
 
-        button {
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-secondary {
-            background: var(--card-bg);
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-        .btn-secondary:hover { background: #334155; }
-
-        .btn-primary {
-            background: var(--success);
-            color: #ffffff;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-        }
-        .btn-primary:hover {
-            background: var(--success-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-        }
-
-        /* Khung Preview xem trước text */
         .preview-box {
-            text-align: left;
-            background: #0f172a;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            height: 300px;
-            overflow-y: auto;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.95rem;
-            color: #cbd5e1;
-            line-height: 1.5;
+            text-align: left; background: #0f172a; border: 1px solid var(--border); border-radius: 8px;
+            padding: 1rem; height: 350px; overflow-y: auto; font-family: monospace; font-size: 0.95rem; color: #cbd5e1;
             white-space: pre-wrap;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
         }
-
-        /* Tùy chỉnh thanh cuộn cho khung Preview */
-        .preview-box::-webkit-scrollbar { width: 8px; }
-        .preview-box::-webkit-scrollbar-track { background: #1e293b; border-radius: 4px; }
-        .preview-box::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
-        .preview-box::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
         .error-msg {
-            color: #ef4444;
-            background: rgba(239, 68, 68, 0.1);
-            padding: 1rem;
-            border-radius: 8px;
-            font-weight: 600;
-            display: none;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 8px; font-weight: 600;
+            display: none; margin-bottom: 1.5rem; border: 1px solid #ef4444;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Ultimate JSON ➔ SRT</h1>
-        <p class="subtitle">Giải mã chuẩn xác file CapCut & các định dạng JSON phổ biến</p>
+        <h1>CapCut To SRT - Đa Nền Tảng</h1>
+        <p class="subtitle">Bao thầu file JSON từ mọi phiên bản CapCut (PC, Mobile, Web)</p>
 
-        <!-- Khu vực kéo thả -->
         <div class="dropzone" id="dropzone">
-            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path></svg>
             <h3>Kéo thả file JSON vào đây</h3>
-            <p>Hỗ trợ file draft_content.json của CapCut</p>
+            <p style="color: #94a3b8;">Hoặc click để chọn file</p>
             <input type="file" id="fileInput" accept=".json" style="display: none;">
         </div>
 
         <div class="error-msg" id="errorMsg"></div>
 
-        <!-- Khu vực kết quả -->
         <div class="result-section" id="resultSection">
-            <div class="status-badge" id="statusBadge">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg>
-                Trích xuất thành công! Tổng 0 dòng phụ đề.
-            </div>
-
+            <div class="status-badge" id="statusBadge">Trích xuất thành công!</div>
             <div class="btn-group">
                 <button class="btn-secondary" onclick="location.reload()">Chọn file khác</button>
-                <button class="btn-primary" id="btnDownload">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path></svg>
-                    Tải File .SRT Xuống Máy
-                </button>
+                <button class="btn-primary" id="btnDownload">Tải File .SRT Xuống Máy</button>
             </div>
-
             <div class="preview-box" id="previewBox"></div>
         </div>
     </div>
@@ -207,13 +114,10 @@
 
         let finalSrt = "";
 
-        // Sự kiện kéo thả
         dropzone.addEventListener('click', () => fileInput.click());
-        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
-        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); });
         dropzone.addEventListener('drop', (e) => {
             e.preventDefault();
-            dropzone.classList.remove('dragover');
             if (e.dataTransfer.files.length) processFile(e.dataTransfer.files[0]);
         });
         fileInput.addEventListener('change', (e) => {
@@ -231,80 +135,108 @@
             errorMsg.style.display = "none";
             const reader = new FileReader();
             reader.onload = function(e) {
+                let json;
+                // BƯỚC 1: KIỂM TRA LỖI FILE HỎNG (CORRUPTED)
                 try {
-                    const json = JSON.parse(e.target.result);
+                    json = JSON.parse(e.target.result);
+                } catch (err) {
+                    showError("Lỗi: Không thể đọc file. File JSON này đã bị hỏng cú pháp (Syntax Error).");
+                    return;
+                }
+                
+                // BƯỚC 2: TIẾN HÀNH GIẢI MÃ
+                try {
                     executeConversion(json);
                 } catch (err) {
-                    showError("Lỗi: Không thể đọc định dạng file JSON này. File có thể bị hỏng.");
+                    console.error(err);
+                    showError("Lỗi thuật toán xử lý: " + err.message + " (Vui lòng bấm F12 xem Console để biết chi tiết)");
                 }
             };
             reader.readAsText(file);
         }
 
         function executeConversion(json) {
-            let srtOutput = parseCapCut(json) || parseGenericJSON(json);
+            let srtOutput = parseUniversalCapCut(json);
 
             if (!srtOutput || srtOutput.trim().length === 0) {
-                showError("Thất bại: Không tìm thấy bất kỳ dữ liệu phụ đề (thời gian & văn bản) nào trong file này!");
+                showError("Thất bại: Đã quét nát file nhưng không tìm thấy dữ liệu phụ đề và thời gian.");
                 return;
             }
 
             finalSrt = srtOutput.trim();
-            
-            // Đếm số dòng phụ đề
             const linesCount = (finalSrt.match(/-->/g) || []).length;
             
-            // Đổi giao diện
             dropzone.style.display = "none";
             resultSection.style.display = "block";
-            statusBadge.innerHTML = `<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg> Trích xuất thành công! Tổng ${linesCount} dòng phụ đề.`;
+            statusBadge.innerHTML = `✅ Trích xuất thành công! Tổng ${linesCount} dòng phụ đề.`;
             previewBox.textContent = finalSrt;
         }
 
-        // --- LÕI SỐ 1: BỘ GIẢI MÃ CHUYÊN SÂU DÀNH CHO CAPCUT ---
-        function parseCapCut(json) {
-            if (!json.materials || !json.materials.texts || !json.tracks) return null;
-
+        // --- LÕI AI DEEP SCAN (QUÉT SÂU KHẮP FILE) ---
+        function parseUniversalCapCut(json) {
+            // 1. Quét Toàn Bộ File để tìm Nội Dung Phụ Đề (Mọi biến thể của CapCut)
             let textMap = {};
-            // Lọc toàn bộ chữ trong bảng materials
-            json.materials.texts.forEach(t => {
-                let content = t.content || t.text || "";
-                if (content) {
-                    // Nếu nó lưu kiểu chuỗi JSON array mảng [ {"text": "..."} ]
-                    if (content.trim().startsWith('[')) {
-                        try {
-                            let parsed = JSON.parse(content);
-                            content = parsed.map(p => p.text || '').join(' ');
-                        } catch(e) {}
+            function extractTexts(obj) {
+                if (Array.isArray(obj)) {
+                    obj.forEach(extractTexts);
+                } else if (typeof obj === 'object' && obj !== null) {
+                    // Cứ hễ thấy object nào có ID và chứa Content/Text là tóm gọn
+                    if (obj.id && (obj.content || obj.text || obj.text_str)) {
+                        let content = obj.content || obj.text || obj.text_str;
+                        if (typeof content === 'string') {
+                            if (content.trim().startsWith('[')) {
+                                try {
+                                    let parsed = JSON.parse(content);
+                                    content = parsed.map(p => p.text || '').join(' ');
+                                } catch(e) {}
+                            }
+                            content = content.replace(/<[^>]+>/g, '').trim();
+                        } else {
+                            content = String(content);
+                        }
+                        if (content) textMap[obj.id] = content;
                     }
-                    // Quét sạch rác HTML (ví dụ <font id="...">)
-                    content = content.replace(/<[^>]+>/g, '').trim();
-                    if (content) textMap[t.id] = content;
+                    for (let key in obj) { extractTexts(obj[key]); }
                 }
-            });
+            }
+            extractTexts(json);
 
+            // 2. Quét Toàn Bộ File để tìm Mốc Thời Gian (Gắn khớp với ID ở trên)
             let subtitles = [];
-            // Lọc thời gian trong bảng tracks
-            json.tracks.forEach(track => {
-                if (!track.segments) return;
-                track.segments.forEach(seg => {
-                    if (seg.material_id && textMap[seg.material_id]) {
-                        let tr = seg.target_timerange;
-                        if (tr && tr.start !== undefined && tr.duration !== undefined) {
-                            let startMs = tr.start / 1000;
-                            let endMs = (tr.start + tr.duration) / 1000;
-                            subtitles.push({
-                                start: startMs,
-                                end: endMs,
-                                text: textMap[seg.material_id]
-                            });
+            function extractTimings(obj) {
+                if (Array.isArray(obj)) {
+                    obj.forEach(extractTimings);
+                } else if (typeof obj === 'object' && obj !== null) {
+                    let mId = obj.material_id || obj.id;
+                    let tr = obj.target_timerange || obj.timerange || obj.time_range;
+                    
+                    if (mId && tr && textMap[mId]) {
+                        let start = tr.start !== undefined ? tr.start : tr.startTime;
+                        let duration = tr.duration;
+                        
+                        if (start !== undefined && duration !== undefined) {
+                            // CapCut dùng Micro-giây (1 triệu = 1s)
+                            let scale = 1000; 
+                            if (duration > 0 && duration < 100000) scale = 1; // Đề phòng bản Mobile đổi sang Mili-giây
+
+                            let startMs = start / scale;
+                            let endMs = (start + duration) / scale;
+                            
+                            // Tránh thêm phụ đề bị trùng lặp thời gian
+                            let exists = subtitles.find(s => s.id === mId && s.start === startMs);
+                            if (!exists) {
+                                subtitles.push({ id: mId, start: startMs, end: endMs, text: textMap[mId] });
+                            }
                         }
                     }
-                });
-            });
+                    for (let key in obj) { extractTimings(obj[key]); }
+                }
+            }
+            extractTimings(json);
 
             if (subtitles.length === 0) return null;
 
+            // 3. Sắp xếp và kết xuất SRT
             subtitles.sort((a, b) => a.start - b.start);
             let srt = "";
             subtitles.forEach((s, i) => {
@@ -313,69 +245,7 @@
             return srt;
         }
 
-        // --- LÕI SỐ 2: BỘ GIẢI MÃ CHO CÁC FILE JSON THÔNG THƯỜNG ---
-        function parseGenericJSON(json) {
-            let targetArr = null;
-            let maxScore = -1;
-
-            // Đệ quy moi mảng phụ đề ẩn
-            function searchTree(node) {
-                if (Array.isArray(node)) {
-                    let score = 0;
-                    let sample = node[0];
-                    if (typeof sample === 'object' && sample !== null) {
-                        let keys = Object.keys(sample).map(k => String(k).toLowerCase());
-                        if (keys.some(k => k.includes('start') || k.includes('time') || k.includes('from'))) score += 10;
-                        if (keys.some(k => k.includes('text') || k.includes('word') || k.includes('content'))) score += 10;
-                    }
-                    if (score > maxScore) { maxScore = score; targetArr = node; }
-                    node.forEach(child => { if (typeof child === 'object' && child !== null) searchTree(child); });
-                } else if (typeof node === 'object' && node !== null) {
-                    for (let key in node) searchTree(node[key]);
-                }
-            }
-            searchTree(json);
-
-            if (!targetArr || maxScore < 10) return null;
-
-            let sample = targetArr[0];
-            let startKey = Object.keys(sample).find(k => ['start', 'from', 'time', 'begin'].some(c => k.toLowerCase().includes(c))) 
-                        || Object.keys(sample).find(k => typeof sample[k] === 'number' || !isNaN(parseFloat(sample[k])));
-            
-            let textKey = Object.keys(sample).find(k => ['text', 'content', 'word', 'subtitle'].some(c => k.toLowerCase().includes(c)))
-                        || Object.keys(sample).find(k => typeof sample[k] === 'string' && isNaN(sample[k]));
-            
-            let endKey = Object.keys(sample).find(k => ['end', 'to', 'stop'].some(c => k.toLowerCase().includes(c)));
-
-            if (!startKey || !textKey) return null;
-
-            // Đoán đơn vị ms hay giây
-            let isMs = false;
-            let maxTime = 0;
-            targetArr.forEach(item => {
-                let v = parseFloat(String(item[startKey]).replace(/[^0-9.]/g, ''));
-                if (!isNaN(v) && v > maxTime) maxTime = v;
-                if (String(item[startKey]).includes('.')) isMs = false;
-            });
-            if (maxTime > 10000 && maxTime === Math.floor(maxTime)) isMs = true;
-
-            let srt = "";
-            let count = 1;
-            targetArr.forEach(item => {
-                let text = item[textKey];
-                if (text === undefined || text === null) return;
-                
-                let startNum = parseFloat(String(item[startKey]).replace(/[^0-9.]/g, ''));
-                if (isNaN(startNum)) return;
-                let endNum = endKey ? parseFloat(String(item[endKey]).replace(/[^0-9.]/g, '')) : (startNum + 2);
-
-                srt += `${count}\n${formatSrtTime(isMs ? startNum : startNum * 1000)} --> ${formatSrtTime(isMs ? endNum : endNum * 1000)}\n${text}\n\n`;
-                count++;
-            });
-            return srt;
-        }
-
-        // --- CÔNG CỤ CHUẨN HÓA THỜI GIAN ---
+        // Chuyển Mili-giây thành định dạng chuẩn SRT (HH:MM:SS,mmm)
         function formatSrtTime(ms) {
             if (isNaN(ms) || ms < 0) ms = 0;
             ms = Math.round(ms);
@@ -385,7 +255,7 @@
             return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')},${String(ms).padStart(3,'0')}`;
         }
 
-        // Nút tải xuống
+        // Kích hoạt Tải xuống
         btnDownload.addEventListener('click', () => {
             if (!finalSrt) return;
             const blob = new Blob([finalSrt], { type: "text/srt;charset=utf-8" });
