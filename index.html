@@ -3,592 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chuyển đổi JSON sang SRT - Cao cấp & Siêu Tốc</title>
-    <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>JSON to SRT - Auto Magic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-gradient: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0f0f1b 100%);
-            --panel-bg: rgba(255, 255, 255, 0.03);
-            --panel-border: rgba(255, 255, 255, 0.08);
-            --accent-glow: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            --accent-purple: linear-gradient(135deg, #b224ef 0%, #7579ff 100%);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --primary: #38bdf8;
+            --success: #10b981;
+            --text: #f8fafc;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
 
         body {
-            background: var(--bg-gradient);
-            color: var(--text-main);
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 2rem 1rem;
-            overflow-x: hidden;
+            padding: 1rem;
         }
-
-        /* Hiệu ứng đốm sáng nền sinh động */
-        .glow-orb {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            background: rgba(79, 172, 254, 0.15);
-            filter: blur(100px);
-            z-index: -1;
-            pointer-events: none;
-        }
-        .orb-1 { top: 10%; left: 15%; }
-        .orb-2 { bottom: 10%; right: 15%; background: rgba(117, 121, 255, 0.15); }
 
         .container {
             width: 100%;
-            max-width: 850px;
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 2.5rem;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
-
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(to right, #ffffff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .subtitle {
-            color: var(--text-muted);
-            text-align: center;
-            font-size: 0.95rem;
-            margin-bottom: 2rem;
-        }
-
-        /* Vùng kéo thả file */
-        .dropzone {
-            border: 2px dashed rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
+            max-width: 600px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
             padding: 3rem 2rem;
             text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 { font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--primary); }
+        p.subtitle { color: #94a3b8; margin-bottom: 2rem; font-size: 0.95rem; }
+
+        /* Vùng kéo thả */
+        .dropzone {
+            border: 2px dashed rgba(56, 189, 248, 0.4);
+            border-radius: 16px;
+            padding: 4rem 2rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.01);
-            margin-bottom: 1.5rem;
+            background: rgba(56, 189, 248, 0.05);
         }
 
         .dropzone:hover, .dropzone.dragover {
-            border-color: #00f2fe;
-            background: rgba(0, 242, 254, 0.02);
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
+            border-color: var(--primary);
+            background: rgba(56, 189, 248, 0.1);
         }
 
-        .dropzone svg {
-            width: 48px;
-            height: 48px;
-            margin-bottom: 1rem;
-            color: #4facfe;
-        }
+        .dropzone svg { width: 56px; height: 56px; color: var(--primary); margin-bottom: 1rem; }
+        .dropzone h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
 
-        .dropzone p {
-            font-size: 1rem;
-            color: var(--text-main);
-            margin-bottom: 0.5rem;
-        }
-
-        .dropzone span {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        /* Tùy chỉnh Mapping Key */
-        .mapping-section {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--panel-border);
-            border-radius: 12px;
-            padding: 1.25rem;
-            margin-bottom: 1.5rem;
-            display: none;
-        }
-
-        .mapping-title {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #00f2fe;
-        }
-
-        .mapping-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .input-group label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        .input-group input, .input-group select {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            padding: 0.5rem;
-            color: #fff;
-            font-size: 0.85rem;
-            outline: none;
-        }
-
-        .input-group input:focus, .input-group select:focus {
-            border-color: #00f2fe;
-        }
-
-        /* Phân vùng xem trước (Preview) */
-        .preview-section {
-            margin-top: 1.5rem;
-            display: none;
-        }
-
-        .preview-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .preview-label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
-
-        .preview-box {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--panel-border);
-            border-radius: 12px;
-            padding: 1rem;
-            max-height: 250px;
-            overflow-y: auto;
-            font-family: monospace;
-            font-size: 0.85rem;
-            line-height: 1.5;
-            color: #a7f3d0;
-            white-space: pre-wrap;
-            text-align: left;
-        }
-
-        /* Nút hành động */
-        .btn-container {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
+        /* Màn hình thành công */
+        #successScreen { display: none; }
+        #successScreen svg { width: 72px; height: 72px; color: var(--success); margin-bottom: 1rem; }
+        
         button {
-            flex: 1;
-            padding: 0.85rem;
+            background: var(--primary);
+            color: #000;
             border: none;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            font-weight: 600;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
+            margin-top: 1.5rem;
+            transition: opacity 0.2s;
         }
-
-        .btn-primary {
-            background: var(--accent-glow);
-            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
-        }
-
-        .btn-primary:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(0, 242, 254, 0.3);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Lỗi / Thông báo */
-        #statusMessage {
-            margin-top: 1rem;
-            text-align: center;
-            font-size: 0.9rem;
-            min-height: 20px;
-        }
-        .error-text { color: #f43f5e; }
-        .success-text { color: #10b981; }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .container { padding: 1.5rem; }
-            .btn-container { flex-direction: column; }
-        }
+        button:hover { opacity: 0.8; }
+        
+        .error-msg { color: #ef4444; margin-top: 1rem; font-weight: 600; display: none; }
     </style>
 </head>
 <body>
 
-    <div class="glow-orb orb-1"></div>
-    <div class="glow-orb orb-2"></div>
-
     <div class="container">
-        <h1>JSON TO SRT CONVERTER</h1>
-        <p class="subtitle">Chuyển đổi file phụ đề dạng JSON sang định dạng chuẩn SRT nhanh chóng & an toàn tuyệt đối</p>
+        <h1>Chuyển Đổi JSON Sang SRT</h1>
+        <p class="subtitle">Không cần cài đặt. Thả file vào là nhận ngay file SRT.</p>
 
-        <!-- Khung Kéo Thả File -->
+        <!-- Màn hình Kéo thả -->
         <div class="dropzone" id="dropzone">
-            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"></path>
-            </svg>
-            <p>Kéo & thả file JSON vào đây hoặc Click để chọn file</p>
-            <span>Hỗ trợ mọi định dạng JSON có chứa dữ liệu thời gian và text</span>
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"></path></svg>
+            <h3>Kéo thả file JSON vào đây</h3>
+            <p style="color: #94a3b8; font-size: 0.85rem;">Hoặc click để chọn file</p>
             <input type="file" id="fileInput" accept=".json" style="display: none;">
         </div>
+        
+        <p class="error-msg" id="errorMsg"></p>
 
-        <!-- Cấu hình mapping key (Tự động hiển thị khi upload file) -->
-        <div class="mapping-section" id="mappingSection">
-            <div class="mapping-title">🛠️ BẢNG DỊCH THUẬT CẤU TRÚC JSON</div>
-            <div class="mapping-grid">
-                <div class="input-group">
-                    <label for="keyStart">Key Thời Gian Bắt Đầu</label>
-                    <input type="text" id="keyStart" placeholder="Ví dụ: start, from">
-                </div>
-                <div class="input-group">
-                    <label for="keyEnd">Key Thời Gian Kết Thúc</label>
-                    <input type="text" id="keyEnd" placeholder="Ví dụ: end, to">
-                </div>
-                <div class="input-group">
-                    <label for="keyText">Key Nội Dung (Text)</label>
-                    <input type="text" id="keyText" placeholder="Ví dụ: text, content">
-                </div>
-                <div class="input-group">
-                    <label for="timeUnit">Đơn Vị Thời Gian</label>
-                    <select id="timeUnit">
-                        <option value="seconds">Giây (Ví dụ: 1.23)</option>
-                        <option value="ms">Mili-giây (Ví dụ: 1230)</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div id="statusMessage"></div>
-
-        <!-- Xem trước SRT -->
-        <div class="preview-section" id="previewSection">
-            <div class="preview-header">
-                <span class="preview-label">Xem trước SRT (10 dòng đầu):</span>
-            </div>
-            <div class="preview-box" id="previewBox"></div>
-        </div>
-
-        <!-- Nút hành động -->
-        <div class="btn-container">
-            <button class="btn-secondary" id="btnReset" style="display: none;">Chọn File Khác</button>
-            <button class="btn-primary" id="btnDownload" style="display: none;">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path></svg>
-                Tải Xuống File .SRT
-            </button>
+        <!-- Màn hình Thành công -->
+        <div id="successScreen">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <h2 style="color: var(--success); margin-bottom: 0.5rem;">Thành Công!</h2>
+            <p style="color: #94a3b8;">File SRT của bạn đã tự động được tải xuống.</p>
+            <button onclick="location.reload()">Chuyển File Khác</button>
         </div>
     </div>
 
     <script>
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
-        const mappingSection = document.getElementById('mappingSection');
-        const previewSection = document.getElementById('previewSection');
-        const previewBox = document.getElementById('previewBox');
-        const btnDownload = document.getElementById('btnDownload');
-        const btnReset = document.getElementById('btnReset');
-        const statusMessage = document.getElementById('statusMessage');
+        const successScreen = document.getElementById('successScreen');
+        const errorMsg = document.getElementById('errorMsg');
 
-        const keyStartInput = document.getElementById('keyStart');
-        const keyEndInput = document.getElementById('keyEnd');
-        const keyTextInput = document.getElementById('keyText');
-        const timeUnitSelect = document.getElementById('timeUnit');
-
-        let rawJsonData = null;
-        let convertedSrtText = "";
-
-        // Trigger Click chọn file
+        // Gắn sự kiện kéo thả
         dropzone.addEventListener('click', () => fileInput.click());
-
-        // Hiệu ứng kéo thả
-        dropzone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropzone.classList.add('dragover');
-        });
-
-        dropzone.addEventListener('dragleave', () => {
-            dropzone.classList.remove('dragover');
-        });
-
+        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
         dropzone.addEventListener('drop', (e) => {
             e.preventDefault();
             dropzone.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) handleFile(files[0]);
+            if (e.dataTransfer.files.length) processFile(e.dataTransfer.files[0]);
         });
-
         fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) handleFile(e.target.files[0]);
+            if (e.target.files.length) processFile(e.target.files[0]);
         });
 
-        // Lắng nghe thay đổi Input Map Key để Render lại thời gian thực
-        [keyStartInput, keyEndInput, keyTextInput, timeUnitSelect].forEach(input => {
-            input.addEventListener('input', () => {
-                if (rawJsonData) processAndPreview();
-            });
-        });
+        function showError(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.style.display = "block";
+            setTimeout(() => errorMsg.style.display = "none", 4000);
+        }
 
-        btnReset.addEventListener('click', resetUI);
-        btnDownload.addEventListener('click', downloadSrt);
-
-        // Xử lý đọc file
-        function handleFile(file) {
-            if (file.type !== "application/json" && !file.name.endsWith('.json')) {
-                showStatus("Vui lòng tải lên file định dạng .json!", "error");
-                return;
-            }
-
+        function processFile(file) {
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
-                    rawJsonData = JSON.parse(e.target.result);
-                    showStatus("Tải file JSON thành công! Hãy cấu hình key bên dưới.", "success");
-                    
-                    // Tìm kiếm và tự động dò key thông minh
-                    autoDetectKeys(rawJsonData);
-                    
-                    // Hiển thị các mục ẩn
-                    mappingSection.style.display = "block";
-                    previewSection.style.display = "block";
-                    btnDownload.style.display = "flex";
-                    btnReset.style.display = "block";
-                    dropzone.style.display = "none";
-
-                    // Chuyển đổi và xem trước
-                    processAndPreview();
-
+                    const json = JSON.parse(e.target.result);
+                    convertAndDownload(json);
                 } catch (err) {
-                    showStatus("File JSON bị lỗi cú pháp, không thể đọc được!", "error");
+                    showError("File JSON bị lỗi hoặc không đọc được!");
                 }
             };
             reader.readAsText(file);
         }
 
-        // Tự động phát hiện key
-        function autoDetectKeys(data) {
-            let list = Array.isArray(data) ? data : null;
-            
-            // Nếu JSON dạng Object lớn chứa Array con
-            if (!list && typeof data === 'object') {
-                for (let key in data) {
-                    if (Array.isArray(data[key])) {
-                        list = data[key];
-                        break;
-                    }
+        // Lõi AI: Quét đệ quy tìm mảng phụ đề ẩn sâu trong JSON
+        function findSubtitleArray(obj) {
+            let bestArr = null;
+            let maxScore = -1;
+
+            function searchTree(node) {
+                if (Array.isArray(node)) {
+                    let score = scoreArray(node);
+                    if (score > maxScore) { maxScore = score; bestArr = node; }
+                    node.forEach(child => { if (typeof child === 'object' && child !== null) searchTree(child); });
+                } else if (typeof node === 'object' && node !== null) {
+                    for (let key in node) searchTree(node[key]);
                 }
             }
 
-            if (!list || list.length === 0) return;
-            const sample = list[0];
-
-            // Dò tìm key Start
-            const startCandidates = ['start', 'from', 'startTime', 'start_time', 'begin', 'time_start'];
-            for(let c of startCandidates) {
-                if (c in sample) { keyStartInput.value = c; break; }
-            }
-            if(!keyStartInput.value) {
-                // Lấy key đầu tiên chứa chữ 'time' hoặc 'start'
-                for(let k in sample) {
-                    if(k.toLowerCase().includes('start') || k.toLowerCase().includes('time')) {
-                        keyStartInput.value = k;
-                        break;
-                    }
+            function scoreArray(arr) {
+                if (arr.length === 0) return 0;
+                let score = 0;
+                let sample = arr[0];
+                if (typeof sample === 'object' && sample !== null) {
+                    let keys = Object.keys(sample).map(k => k.toLowerCase());
+                    if (keys.some(k => k.includes('start') || k.includes('time') || k.includes('from'))) score += 10;
+                    if (keys.some(k => k.includes('text') || k.includes('word') || k.includes('content'))) score += 10;
+                    score += Math.min(arr.length, 50); // Mảng càng dài càng dễ là phụ đề
                 }
+                return score;
             }
 
-            // Dò tìm key End
-            const endCandidates = ['end', 'to', 'endTime', 'end_time', 'stop', 'time_end'];
-            for(let c of endCandidates) {
-                if (c in sample) { keyEndInput.value = c; break; }
-            }
-
-            // Dò tìm key Text
-            const textCandidates = ['text', 'content', 'subtitle', 'transcript', 'body', 'words'];
-            for(let c of textCandidates) {
-                if (c in sample) { keyTextInput.value = c; break; }
-            }
-
-            // Dò đơn vị thời gian
-            const startVal = parseFloat(sample[keyStartInput.value]);
-            if (!isNaN(startVal)) {
-                // Nếu giá trị lớn (ví dụ 1000ms tương đương 1 giây), tự động chọn ms
-                if (startVal > 100) {
-                    timeUnitSelect.value = "ms";
-                } else {
-                    timeUnitSelect.value = "seconds";
-                }
-            }
+            searchTree(obj);
+            return maxScore > 10 ? bestArr : null;
         }
 
-        // Tạo chuỗi thời gian chuẩn SRT (HH:MM:SS,mmm)
-        function formatSrtTime(val, unit) {
-            let ms = parseFloat(val);
-            if (isNaN(ms)) return "00:00:00,000";
-
-            if (unit === "seconds") {
-                ms = ms * 1000;
-            }
-            ms = Math.round(ms);
-
-            let hours = Math.floor(ms / 3600000);
-            ms %= 3600000;
-            let minutes = Math.floor(ms / 60000);
-            ms %= 60000;
-            let seconds = Math.floor(ms / 1000);
-            let milliseconds = ms % 1000;
-
-            return (
-                String(hours).padStart(2, '0') + ':' +
-                String(minutes).padStart(2, '0') + ':' +
-                String(seconds).padStart(2, '0') + ',' +
-                String(milliseconds).padStart(2, '0')
-            );
-        }
-
-        // Xử lý dữ liệu và tạo preview
-        function processAndPreview() {
-            let list = Array.isArray(rawJsonData) ? rawJsonData : null;
+        // Lõi xử lý dữ liệu và tạo SRT
+        function convertAndDownload(jsonObj) {
+            const targetArray = findSubtitleArray(jsonObj);
             
-            // Tìm mảng con nếu JSON tổng là Object
-            if (!list && typeof rawJsonData === 'object') {
-                for (let key in rawJsonData) {
-                    if (Array.isArray(rawJsonData[key])) {
-                        list = rawJsonData[key];
-                        break;
-                    }
-                }
-            }
-
-            if (!list || list.length === 0) {
-                showStatus("Không tìm thấy danh sách (Array) chứa phụ đề trong file JSON!", "error");
+            if (!targetArray) {
+                showError("Không tìm thấy dữ liệu phụ đề (Text + Thời gian) trong file này!");
                 return;
             }
 
-            const keyStart = keyStartInput.value.trim();
-            const keyEnd = keyEndInput.value.trim();
-            const keyText = keyTextInput.value.trim();
-            const unit = timeUnitSelect.value;
+            let sample = targetArray[0];
+            let startKey = null, endKey = null, textKey = null;
 
-            if (!keyStart || !keyText) {
-                showStatus("Vui lòng cấu hình ít nhất là Key thời gian bắt đầu và Key nội dung!", "error");
+            // Dò tìm Key nội dung Text
+            const textCands = ['text', 'content', 'word', 'subtitle', 'transcript'];
+            textKey = Object.keys(sample).find(k => textCands.some(c => k.toLowerCase().includes(c)));
+            if(!textKey) textKey = Object.keys(sample).find(k => typeof sample[k] === 'string' && isNaN(sample[k]));
+
+            // Dò tìm Key thời gian bắt đầu
+            const startCands = ['start', 'from', 'time', 'begin'];
+            startKey = Object.keys(sample).find(k => startCands.some(c => k.toLowerCase().includes(c)));
+            if(!startKey) startKey = Object.keys(sample).find(k => k !== textKey && (typeof sample[k] === 'number' || !isNaN(parseFloat(sample[k]))));
+
+            // Dò tìm Key thời gian kết thúc
+            const endCands = ['end', 'to', 'stop'];
+            endKey = Object.keys(sample).find(k => endCands.some(c => k.toLowerCase().includes(c)));
+
+            if (!startKey || !textKey) {
+                showError("Không phân tích được cấu trúc Thời gian & Nội dung!");
                 return;
             }
 
-            let srtOutput = "";
-            let srtCount = 1;
+            // Đoán xem thời gian là Giây hay Mili-giây
+            let isMs = false;
+            let maxTime = 0;
+            targetArray.forEach(item => {
+                let v = parseFloat(String(item[startKey]).replace(/[^0-9.]/g, ''));
+                if (!isNaN(v) && v > maxTime) maxTime = v;
+                if (String(item[startKey]).includes('.')) isMs = false; // Có dấu phẩy chắc chắn là giây
+            });
+            if (maxTime > 10000 && maxTime === Math.floor(maxTime)) isMs = true;
 
-            list.forEach((item) => {
-                const startVal = item[keyStart];
-                const textVal = item[keyText];
-                // Nếu keyEnd không được định cấu hình, tự cộng thêm 2 giây làm mốc kết thúc mặc định
-                const endVal = keyEnd ? item[keyEnd] : (parseFloat(startVal) + (unit === "seconds" ? 2 : 2000));
+            // Sinh file SRT
+            let srt = "";
+            let count = 1;
 
-                if (startVal !== undefined && textVal !== undefined) {
-                    const timeStartFormatted = formatSrtTime(startVal, unit);
-                    const timeEndFormatted = formatSrtTime(endVal, unit);
+            targetArray.forEach(item => {
+                let text = item[textKey];
+                if (text === undefined || text === null) return;
+                
+                let startRaw = item[startKey];
+                let endRaw = endKey ? item[endKey] : null;
 
-                    srtOutput += `${srtCount}\n`;
-                    srtOutput += `${timeStartFormatted} --> ${timeEndFormatted}\n`;
-                    srtOutput += `${textVal}\n\n`;
-                    srtCount++;
-                }
+                let startNum = parseFloat(String(startRaw).replace(/[^0-9.]/g, ''));
+                if (isNaN(startNum)) return;
+                let endNum = endRaw ? parseFloat(String(endRaw).replace(/[^0-9.]/g, '')) : (startNum + 2); // Cộng 2 giây nếu ko có key kết thúc
+
+                srt += `${count}\n${formatTime(startNum, isMs)} --> ${formatTime(endNum, isMs)}\n${text}\n\n`;
+                count++;
             });
 
-            convertedSrtText = srtOutput.trim();
-
-            if (convertedSrtText.length === 0) {
-                showStatus("Không tạo được phụ đề nào. Hãy kiểm tra lại tên các Key!", "error");
-                previewBox.textContent = "";
-                return;
-            }
-
-            showStatus("Đã chuyển đổi hoàn tất! Bạn có thể tải file ngay bây giờ.", "success");
-            
-            // Lấy 10 dòng đầu của SRT để preview
-            const previewLines = convertedSrtText.split('\n').slice(0, 40).join('\n');
-            previewBox.textContent = previewLines + "\n...";
-        }
-
-        // Tải file .srt về máy
-        function downloadSrt() {
-            if (!convertedSrtText) return;
-            const blob = new Blob([convertedSrtText], { type: "text/srt;charset=utf-8" });
+            // Ép tải xuống
+            const blob = new Blob([srt], { type: "text/srt;charset=utf-8" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = "subtitle_converted.srt";
+            a.download = "phude_tudong.srt";
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+
+            // Chuyển giao diện
+            dropzone.style.display = "none";
+            successScreen.style.display = "block";
         }
 
-        // Reset UI về ban đầu
-        function resetUI() {
-            rawJsonData = null;
-            convertedSrtText = "";
-            fileInput.value = "";
-            keyStartInput.value = "";
-            keyEndInput.value = "";
-            keyTextInput.value = "";
-            statusMessage.innerHTML = "";
-            
-            mappingSection.style.display = "none";
-            previewSection.style.display = "none";
-            btnDownload.style.display = "none";
-            btnReset.style.display = "none";
-            dropzone.style.display = "block";
-        }
-
-        // Hiện thông báo trạng thái
-        function showStatus(msg, type) {
-            statusMessage.textContent = msg;
-            statusMessage.className = type === "error" ? "error-text" : "success-text";
+        // Đổi thời gian ra định dạng chuẩn SRT (HH:MM:SS,mmm)
+        function formatTime(val, isMs) {
+            let ms = Math.round(isMs ? val : val * 1000);
+            let h = Math.floor(ms / 3600000); ms %= 3600000;
+            let m = Math.floor(ms / 60000); ms %= 60000;
+            let s = Math.floor(ms / 1000); ms %= 1000;
+            return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')},${String(ms).padStart(3,'0')}`;
         }
     </script>
 </body>
