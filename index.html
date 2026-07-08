@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate JSON ➔ SRT (Bản Khắc Chế CapCut)</title>
+    <title>CapCut ➔ SRT (Lọc Sạch Rác)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -26,20 +26,20 @@
         .btn-secondary:hover { background: #475569; }
         .btn-primary { background: var(--success); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
         .btn-primary:hover { background: #059669; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4); }
-        .preview-box { text-align: left; background: #0f172a; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; height: 350px; overflow-y: auto; font-family: monospace; font-size: 0.95rem; color: #cbd5e1; white-space: pre-wrap; }
+        .preview-box { text-align: left; background: #0f172a; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; height: 350px; overflow-y: auto; font-family: monospace; font-size: 0.95rem; color: #a7f3d0; white-space: pre-wrap; }
         .error-msg { color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 8px; font-weight: 600; display: none; margin-bottom: 1.5rem; border: 1px solid rgba(239, 68, 68, 0.2); }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Ultimate JSON ➔ SRT</h1>
-        <p class="subtitle">Khắc chế 100% mọi mánh khóe giấu chữ của CapCut</p>
+        <h1>CapCut ➔ SRT (Bản Lọc Sạch Rác)</h1>
+        <p class="subtitle">Phiên bản cuối cùng: Tự động tách chữ tiếng Việt ra khỏi mớ code hỗn độn.</p>
 
         <div class="dropzone" id="dropzone">
             <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color: #3b82f6; margin-bottom: 1rem;"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path></svg>
             <h3>Kéo thả file draft_content.json vào đây</h3>
-            <p style="color: #94a3b8;">Hệ thống sẽ tự bóc tách để lấy chữ sạch sẽ nhất</p>
+            <p style="color: #94a3b8;">Hệ thống sẽ mổ xẻ lấy chữ sạch 100%</p>
             <input type="file" id="fileInput" accept=".json" style="display: none;">
         </div>
 
@@ -102,7 +102,7 @@
             let srtOutput = parseUniversalCapCut(json);
 
             if (!srtOutput || srtOutput.trim().length === 0) {
-                showError("Thất bại: Không tìm thấy dữ liệu phụ đề trong file này!");
+                showError("Thất bại: Không tìm thấy phụ đề nào hoặc file không đúng định dạng!");
                 return;
             }
 
@@ -111,13 +111,13 @@
             
             dropzone.style.display = "none";
             resultSection.style.display = "block";
-            statusBadge.innerHTML = `✅ Thành công rực rỡ! Đã lọc sạch bong ${linesCount} dòng phụ đề.`;
+            statusBadge.innerHTML = `✅ Tuyệt vời! Đã lọc sạch ${linesCount} dòng phụ đề.`;
             previewBox.textContent = finalSrt;
         }
 
-        // HÀM LỌC RÁC KHẮC CHẾ CAPCUT (Phiên bản Regex mổ bụng)
+        // HÀM MỔ XẺ LẤY CHỮ SẠCH 100% CỦA CAPCUT
         function cleanTextExtremely(obj) {
-            // Ưu tiên tìm text_str trước vì đôi khi CapCut giấu chữ sạch ở đây
+            // Ưu tiên text_str
             let content = obj.text_str || obj.text || obj.content;
             if (content === null || content === undefined) return "";
 
@@ -126,14 +126,15 @@
             }
 
             if (typeof content === 'string') {
-                // 1. Quét sạch HTML (các thẻ <font>...) TRƯỚC TIÊN để lột mặt nạ bảo vệ
+                // Xóa mã rác HTML
                 content = content.replace(/<[^>]+>/g, '').trim();
 
-                // 2. Bẻ khóa JSON Stringified
                 if (content.startsWith('{') || content.startsWith('[')) {
                     let parsedSuccess = false;
                     try {
-                        let parsed = JSON.parse(content);
+                        // Sửa lỗi JSON bị ngắt dòng ẩn của CapCut
+                        let safeJson = content.replace(/\n/g, '\\n').replace(/\r/g, '');
+                        let parsed = JSON.parse(safeJson);
                         if (Array.isArray(parsed)) {
                             let extracted = parsed.map(p => p.text || '').join(' ').trim();
                             if (extracted) { content = extracted; parsedSuccess = true; }
@@ -142,13 +143,18 @@
                         }
                     } catch(e) {}
 
-                    // 3. VŨ KHÍ HẠNG NẶNG: Dùng Regex móc lấy chữ nếu JSON bị lỗi cú pháp
+                    // Nếu Parse JSON thất bại, dùng thủ thuật Regex bắt sống chữ tiếng Việt
                     if (!parsedSuccess) {
                         let match = content.match(/"text"\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"/);
                         if (match && match[1]) {
                             content = match[1];
-                            // Giải mã các ký tự đặc biệt (ví dụ \n)
                             try { content = JSON.parse('"' + content + '"'); } catch(err){}
+                        } else {
+                            match = content.match(/"text_str"\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"/);
+                            if (match && match[1]) {
+                                content = match[1];
+                                try { content = JSON.parse('"' + content + '"'); } catch(err){}
+                            }
                         }
                     }
                 }
@@ -229,7 +235,7 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = "phude_capcut_sachse.srt";
+            a.download = "phude_capcut_sach.srt";
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
