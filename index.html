@@ -1,244 +1,595 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TÀNG THƯ CẤM • TOÀN BỘ CẤM THUẬT</title>
-  <meta name="description" content="Tàng thư cấm – nơi lưu trữ toàn bộ cấm thuật nhân tính tối cao. Sở hữu vĩnh viễn bộ sưu tập đầy đủ với giá 1.400.000 ₫ – kiến thức không thể quay đầu."/>
-  <meta property="og:title" content="Tàng Thư Cấm – Toàn Bộ Cấm Thuật"/>
-  <meta property="og:description" content="Bộ sưu tập cấm thuật toàn tập – 1.400.000 ₫. Sở hữu vĩnh viễn."/>
-  <meta property="og:image" content="https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=1200&auto=format&fit=crop&q=80"/>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=IM+Fell+English+SC&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;700;900&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
-  <style>
-    :root {
-      --bg: #000000;
-      --card: rgba(3,3,3,0.88);
-      --text: #d2c49e;
-      --accent: #b08f3e;
-      --accent-glow: #d9bf6a;
-      --red: #550000;
-      --gradient: radial-gradient(ellipse at 50% 0%, #2a1a00 0%, #000000 85%);
-      --shadow-deep: 0 40px 100px rgba(0,0,0,1);
-      --glow-intense: 0 0 65px rgba(176,143,62,0.45);
-      --blur-heavy: blur(24px);
-      --neon-glow: 0 0 20px rgba(176,143,62,0.7), 0 0 40px rgba(176,143,62,0.5);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyển đổi JSON sang SRT - Cao cấp & Siêu Tốc</title>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0f0f1b 100%);
+            --panel-bg: rgba(255, 255, 255, 0.03);
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --accent-glow: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            --accent-purple: linear-gradient(135deg, #b224ef 0%, #7579ff 100%);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
 
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--gradient);
-      color: var(--text);
-      min-height: 100vh;
-      line-height: 1.9;
-      overflow-x: hidden;
-      background-attachment: fixed;
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
 
-    .parallax-bg {
-      position: fixed;
-      inset: 0;
-      background: url('https://images.unsplash.com/photo-1557683316-973673baf926?w=3000&auto=format&fit=crop&q=10&blend=000000&blend-mode=multiply') center/cover no-repeat fixed;
-      z-index: -3;
-      opacity: 0.08;
-    }
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            overflow-x: hidden;
+        }
 
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.97) 100%);
-      z-index: -2;
-    }
+        /* Hiệu ứng đốm sáng nền sinh động */
+        .glow-orb {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: rgba(79, 172, 254, 0.15);
+            filter: blur(100px);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .orb-1 { top: 10%; left: 15%; }
+        .orb-2 { bottom: 10%; right: 15%; background: rgba(117, 121, 255, 0.15); }
 
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 140px 40px 200px;
-      position: relative;
-      z-index: 4;
-      text-align: center;
-    }
+        .container {
+            width: 100%;
+            max-width: 850px;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
 
-    .seal {
-      font-family: 'UnifrakturMaguntia', cursive;
-      font-size: 8rem;
-      background: linear-gradient(90deg, var(--accent), var(--accent-glow), #f0d47a, var(--accent-glow), var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 12px 40px rgba(176,143,62,0.6);
-      letter-spacing: 12px;
-      margin-bottom: 30px;
-      animation: pulse-seal 10s infinite alternate;
-    }
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    @keyframes pulse-seal {
-      0% { opacity: 0.92; transform: scale(1); }
-      100% { opacity: 1; transform: scale(1.02); }
-    }
+        .subtitle {
+            color: var(--text-muted);
+            text-align: center;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
 
-    .title-main {
-      font-family: 'Cinzel Decorative', serif;
-      font-size: 4.5rem;
-      color: var(--accent-glow);
-      margin: 40px 0 20px;
-      letter-spacing: 8px;
-      text-shadow: 0 0 50px var(--glow-intense);
-    }
+        /* Vùng kéo thả file */
+        .dropzone {
+            border: 2px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.01);
+            margin-bottom: 1.5rem;
+        }
 
-    .subtitle {
-      font-family: 'IM Fell English SC', serif;
-      font-size: 2.4rem;
-      opacity: 0.94;
-      font-style: italic;
-      margin-bottom: 40px;
-      letter-spacing: 3px;
-    }
+        .dropzone:hover, .dropzone.dragover {
+            border-color: #00f2fe;
+            background: rgba(0, 242, 254, 0.02);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
+        }
 
-    .warning {
-      font-size: 1.8rem;
-      color: var(--red);
-      margin: 60px 0 100px;
-      font-weight: 900;
-      letter-spacing: 2.5px;
-      text-shadow: 0 0 25px rgba(85,0,0,0.8);
-      animation: pulse-red 5s infinite;
-    }
+        .dropzone svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
+            color: #4facfe;
+        }
 
-    @keyframes pulse-red {
-      0%, 100% { opacity: 0.75; }
-      50% { opacity: 1; }
-    }
+        .dropzone p {
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
 
-    .bundle-card {
-      background: var(--card);
-      backdrop-filter: var(--blur-heavy);
-      -webkit-backdrop-filter: var(--blur-heavy);
-      border-radius: 40px;
-      border: 2px solid rgba(176,143,62,0.25);
-      box-shadow: var(--shadow-deep), var(--neon-glow), inset 0 0 30px rgba(176,143,62,0.12);
-      padding: 80px 60px;
-      max-width: 600px;
-      margin: 0 auto 80px;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.9s cubic-bezier(0.23,1,0.32,1);
-    }
+        .dropzone span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
 
-    .bundle-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 70px 150px rgba(0,0,0,1), 0 0 100px rgba(176,143,62,0.6);
-      border-color: rgba(176,143,62,0.8);
-    }
+        /* Tùy chỉnh Mapping Key */
+        .mapping-section {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
 
-    .ribbon {
-      position: absolute;
-      top: 40px;
-      right: -120px;
-      background: var(--red);
-      color: white;
-      padding: 15px 140px;
-      font-size: 1.3rem;
-      font-weight: 900;
-      transform: rotate(45deg);
-      z-index: 1;
-      box-shadow: 0 12px 30px rgba(85,0,0,0.9);
-    }
+        .mapping-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #00f2fe;
+        }
 
-    .price {
-      font-size: 5rem;
-      font-weight: 900;
-      color: var(--red);
-      margin: 40px 0;
-      text-shadow: 0 6px 20px rgba(85,0,0,0.8);
-    }
+        .mapping-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
 
-    .btn-buy {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--accent), var(--accent-glow), #f0d47a);
-      color: #000;
-      padding: 28px 80px;
-      border-radius: 999px;
-      font-size: 1.6rem;
-      font-weight: 900;
-      text-decoration: none;
-      box-shadow: 0 15px 40px rgba(176,143,62,0.9), var(--neon-glow);
-      transition: all 0.8s ease;
-      margin-top: 50px;
-      position: relative;
-      overflow: hidden;
-    }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
 
-    .btn-buy::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -200%;
-      width: 200%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
-      transition: left 1.5s;
-    }
+        .input-group label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
 
-    .btn-buy:hover::before { left: 200%; }
+        .input-group input, .input-group select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 0.5rem;
+            color: #fff;
+            font-size: 0.85rem;
+            outline: none;
+        }
 
-    .btn-buy:hover {
-      transform: translateY(-10px) scale(1.08);
-      box-shadow: 0 30px 70px rgba(176,143,62,1.2), var(--neon-glow);
-    }
+        .input-group input:focus, .input-group select:focus {
+            border-color: #00f2fe;
+        }
 
-    .eternal {
-      font-size: 2rem;
-      color: var(--accent-glow);
-      margin-top: 30px;
-      letter-spacing: 4px;
-    }
+        /* Phân vùng xem trước (Preview) */
+        .preview-section {
+            margin-top: 1.5rem;
+            display: none;
+        }
 
-    footer {
-      font-size: 1.2rem;
-      opacity: 0.85;
-      padding: 80px 0;
-      border-top: 1px solid rgba(176,143,62,0.2);
-    }
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
 
-    @media (max-width: 480px) {
-      .seal { font-size: 5rem; }
-      .title-main { font-size: 3.2rem; }
-      .subtitle { font-size: 1.8rem; }
-      .bundle-card { padding: 60px 40px; }
-      .price { font-size: 4rem; }
-      .btn-buy { padding: 22px 60px; font-size: 1.4rem; }
-    }
-  </style>
+        .preview-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .preview-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 1rem;
+            max-height: 250px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #a7f3d0;
+            white-space: pre-wrap;
+            text-align: left;
+        }
+
+        /* Nút hành động */
+        .btn-container {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            flex: 1;
+            padding: 0.85rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-glow);
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0, 242, 254, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Lỗi / Thông báo */
+        #statusMessage {
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+            min-height: 20px;
+        }
+        .error-text { color: #f43f5e; }
+        .success-text { color: #10b981; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container { padding: 1.5rem; }
+            .btn-container { flex-direction: column; }
+        }
+    </style>
 </head>
 <body>
 
-  <div class="parallax-bg"></div>
-  <div class="overlay"></div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
 
-  <div class="container">
+    <div class="container">
+        <h1>JSON TO SRT CONVERTER</h1>
+        <p class="subtitle">Chuyển đổi file phụ đề dạng JSON sang định dạng chuẩn SRT nhanh chóng & an toàn tuyệt đối</p>
 
-    <div class="seal">CẤM</div>
+        <!-- Khung Kéo Thả File -->
+        <div class="dropzone" id="dropzone">
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"></path>
+            </svg>
+            <p>Kéo & thả file JSON vào đây hoặc Click để chọn file</p>
+            <span>Hỗ trợ mọi định dạng JSON có chứa dữ liệu thời gian và text</span>
+            <input type="file" id="fileInput" accept=".json" style="display: none;">
+        </div>
 
-    <h1 class="title-main">TOÀN BỘ CẤM THUẬT</h1>
-    <div class="subtitle">TÀNG THƯ CẤM • BỘ SƯU TẬP TOÀN TẬP</div>
+        <!-- Cấu hình mapping key (Tự động hiển thị khi upload file) -->
+        <div class="mapping-section" id="mappingSection">
+            <div class="mapping-title">🛠️ BẢNG DỊCH THUẬT CẤU TRÚC JSON</div>
+            <div class="mapping-grid">
+                <div class="input-group">
+                    <label for="keyStart">Key Thời Gian Bắt Đầu</label>
+                    <input type="text" id="keyStart" placeholder="Ví dụ: start, from">
+                </div>
+                <div class="input-group">
+                    <label for="keyEnd">Key Thời Gian Kết Thúc</label>
+                    <input type="text" id="keyEnd" placeholder="Ví dụ: end, to">
+                </div>
+                <div class="input-group">
+                    <label for="keyText">Key Nội Dung (Text)</label>
+                    <input type="text" id="keyText" placeholder="Ví dụ: text, content">
+                </div>
+                <div class="input-group">
+                    <label for="timeUnit">Đơn Vị Thời Gian</label>
+                    <select id="timeUnit">
+                        <option value="seconds">Giây (Ví dụ: 1.23)</option>
+                        <option value="ms">Mili-giây (Ví dụ: 1230)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
 
-    <div class="warning">CẢNH BÁO: Kiến thức này thay đổi vĩnh viễn nhận thức của bạn – không thể quay đầu.</div>
+        <div id="statusMessage"></div>
 
-    <div class="bundle-card">
-      <div class="ribbon">CẤM THUẬT TỐI CAO</div>
-      <h2 class="title-main" style="font-size: 3.5rem; margin: 0;">BỘ SƯU TẬP CẤM THUẬT TOÀN TẬP</h2>
-      <div class="price">1.400.000 ₫</div>
-      <a href="#" class="btn-buy">SỞ HỮU VĨNH VIỄN</a>
-      <div class="eternal">SỞ HỮU VĨNH VIỄN</div>
+        <!-- Xem trước SRT -->
+        <div class="preview-section" id="previewSection">
+            <div class="preview-header">
+                <span class="preview-label">Xem trước SRT (10 dòng đầu):</span>
+            </div>
+            <div class="preview-box" id="previewBox"></div>
+        </div>
+
+        <!-- Nút hành động -->
+        <div class="btn-container">
+            <button class="btn-secondary" id="btnReset" style="display: none;">Chọn File Khác</button>
+            <button class="btn-primary" id="btnDownload" style="display: none;">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path></svg>
+                Tải Xuống File .SRT
+            </button>
+        </div>
     </div>
 
-    <footer>
-      © 2026 TÀNG THƯ CẤM • Nơi cất giữ toàn bộ cấm thuật – không bao giờ được phép lan truyền.<br>
-      Liên hệ bí mật: @cuungodao | Một khi sở hữu, bạn đã bước vào bóng tối vĩnh cửu.
-    </footer>
+    <script>
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('fileInput');
+        const mappingSection = document.getElementById('mappingSection');
+        const previewSection = document.getElementById('previewSection');
+        const previewBox = document.getElementById('previewBox');
+        const btnDownload = document.getElementById('btnDownload');
+        const btnReset = document.getElementById('btnReset');
+        const statusMessage = document.getElementById('statusMessage');
 
-  </div>
+        const keyStartInput = document.getElementById('keyStart');
+        const keyEndInput = document.getElementById('keyEnd');
+        const keyTextInput = document.getElementById('keyText');
+        const timeUnitSelect = document.getElementById('timeUnit');
 
+        let rawJsonData = null;
+        let convertedSrtText = "";
+
+        // Trigger Click chọn file
+        dropzone.addEventListener('click', () => fileInput.click());
+
+        // Hiệu ứng kéo thả
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('dragover');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('dragover');
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) handleFile(files[0]);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) handleFile(e.target.files[0]);
+        });
+
+        // Lắng nghe thay đổi Input Map Key để Render lại thời gian thực
+        [keyStartInput, keyEndInput, keyTextInput, timeUnitSelect].forEach(input => {
+            input.addEventListener('input', () => {
+                if (rawJsonData) processAndPreview();
+            });
+        });
+
+        btnReset.addEventListener('click', resetUI);
+        btnDownload.addEventListener('click', downloadSrt);
+
+        // Xử lý đọc file
+        function handleFile(file) {
+            if (file.type !== "application/json" && !file.name.endsWith('.json')) {
+                showStatus("Vui lòng tải lên file định dạng .json!", "error");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    rawJsonData = JSON.parse(e.target.result);
+                    showStatus("Tải file JSON thành công! Hãy cấu hình key bên dưới.", "success");
+                    
+                    // Tìm kiếm và tự động dò key thông minh
+                    autoDetectKeys(rawJsonData);
+                    
+                    // Hiển thị các mục ẩn
+                    mappingSection.style.display = "block";
+                    previewSection.style.display = "block";
+                    btnDownload.style.display = "flex";
+                    btnReset.style.display = "block";
+                    dropzone.style.display = "none";
+
+                    // Chuyển đổi và xem trước
+                    processAndPreview();
+
+                } catch (err) {
+                    showStatus("File JSON bị lỗi cú pháp, không thể đọc được!", "error");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Tự động phát hiện key
+        function autoDetectKeys(data) {
+            let list = Array.isArray(data) ? data : null;
+            
+            // Nếu JSON dạng Object lớn chứa Array con
+            if (!list && typeof data === 'object') {
+                for (let key in data) {
+                    if (Array.isArray(data[key])) {
+                        list = data[key];
+                        break;
+                    }
+                }
+            }
+
+            if (!list || list.length === 0) return;
+            const sample = list[0];
+
+            // Dò tìm key Start
+            const startCandidates = ['start', 'from', 'startTime', 'start_time', 'begin', 'time_start'];
+            for(let c of startCandidates) {
+                if (c in sample) { keyStartInput.value = c; break; }
+            }
+            if(!keyStartInput.value) {
+                // Lấy key đầu tiên chứa chữ 'time' hoặc 'start'
+                for(let k in sample) {
+                    if(k.toLowerCase().includes('start') || k.toLowerCase().includes('time')) {
+                        keyStartInput.value = k;
+                        break;
+                    }
+                }
+            }
+
+            // Dò tìm key End
+            const endCandidates = ['end', 'to', 'endTime', 'end_time', 'stop', 'time_end'];
+            for(let c of endCandidates) {
+                if (c in sample) { keyEndInput.value = c; break; }
+            }
+
+            // Dò tìm key Text
+            const textCandidates = ['text', 'content', 'subtitle', 'transcript', 'body', 'words'];
+            for(let c of textCandidates) {
+                if (c in sample) { keyTextInput.value = c; break; }
+            }
+
+            // Dò đơn vị thời gian
+            const startVal = parseFloat(sample[keyStartInput.value]);
+            if (!isNaN(startVal)) {
+                // Nếu giá trị lớn (ví dụ 1000ms tương đương 1 giây), tự động chọn ms
+                if (startVal > 100) {
+                    timeUnitSelect.value = "ms";
+                } else {
+                    timeUnitSelect.value = "seconds";
+                }
+            }
+        }
+
+        // Tạo chuỗi thời gian chuẩn SRT (HH:MM:SS,mmm)
+        function formatSrtTime(val, unit) {
+            let ms = parseFloat(val);
+            if (isNaN(ms)) return "00:00:00,000";
+
+            if (unit === "seconds") {
+                ms = ms * 1000;
+            }
+            ms = Math.round(ms);
+
+            let hours = Math.floor(ms / 3600000);
+            ms %= 3600000;
+            let minutes = Math.floor(ms / 60000);
+            ms %= 60000;
+            let seconds = Math.floor(ms / 1000);
+            let milliseconds = ms % 1000;
+
+            return (
+                String(hours).padStart(2, '0') + ':' +
+                String(minutes).padStart(2, '0') + ':' +
+                String(seconds).padStart(2, '0') + ',' +
+                String(milliseconds).padStart(2, '0')
+            );
+        }
+
+        // Xử lý dữ liệu và tạo preview
+        function processAndPreview() {
+            let list = Array.isArray(rawJsonData) ? rawJsonData : null;
+            
+            // Tìm mảng con nếu JSON tổng là Object
+            if (!list && typeof rawJsonData === 'object') {
+                for (let key in rawJsonData) {
+                    if (Array.isArray(rawJsonData[key])) {
+                        list = rawJsonData[key];
+                        break;
+                    }
+                }
+            }
+
+            if (!list || list.length === 0) {
+                showStatus("Không tìm thấy danh sách (Array) chứa phụ đề trong file JSON!", "error");
+                return;
+            }
+
+            const keyStart = keyStartInput.value.trim();
+            const keyEnd = keyEndInput.value.trim();
+            const keyText = keyTextInput.value.trim();
+            const unit = timeUnitSelect.value;
+
+            if (!keyStart || !keyText) {
+                showStatus("Vui lòng cấu hình ít nhất là Key thời gian bắt đầu và Key nội dung!", "error");
+                return;
+            }
+
+            let srtOutput = "";
+            let srtCount = 1;
+
+            list.forEach((item) => {
+                const startVal = item[keyStart];
+                const textVal = item[keyText];
+                // Nếu keyEnd không được định cấu hình, tự cộng thêm 2 giây làm mốc kết thúc mặc định
+                const endVal = keyEnd ? item[keyEnd] : (parseFloat(startVal) + (unit === "seconds" ? 2 : 2000));
+
+                if (startVal !== undefined && textVal !== undefined) {
+                    const timeStartFormatted = formatSrtTime(startVal, unit);
+                    const timeEndFormatted = formatSrtTime(endVal, unit);
+
+                    srtOutput += `${srtCount}\n`;
+                    srtOutput += `${timeStartFormatted} --> ${timeEndFormatted}\n`;
+                    srtOutput += `${textVal}\n\n`;
+                    srtCount++;
+                }
+            });
+
+            convertedSrtText = srtOutput.trim();
+
+            if (convertedSrtText.length === 0) {
+                showStatus("Không tạo được phụ đề nào. Hãy kiểm tra lại tên các Key!", "error");
+                previewBox.textContent = "";
+                return;
+            }
+
+            showStatus("Đã chuyển đổi hoàn tất! Bạn có thể tải file ngay bây giờ.", "success");
+            
+            // Lấy 10 dòng đầu của SRT để preview
+            const previewLines = convertedSrtText.split('\n').slice(0, 40).join('\n');
+            previewBox.textContent = previewLines + "\n...";
+        }
+
+        // Tải file .srt về máy
+        function downloadSrt() {
+            if (!convertedSrtText) return;
+            const blob = new Blob([convertedSrtText], { type: "text/srt;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "subtitle_converted.srt";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Reset UI về ban đầu
+        function resetUI() {
+            rawJsonData = null;
+            convertedSrtText = "";
+            fileInput.value = "";
+            keyStartInput.value = "";
+            keyEndInput.value = "";
+            keyTextInput.value = "";
+            statusMessage.innerHTML = "";
+            
+            mappingSection.style.display = "none";
+            previewSection.style.display = "none";
+            btnDownload.style.display = "none";
+            btnReset.style.display = "none";
+            dropzone.style.display = "block";
+        }
+
+        // Hiện thông báo trạng thái
+        function showStatus(msg, type) {
+            statusMessage.textContent = msg;
+            statusMessage.className = type === "error" ? "error-text" : "success-text";
+        }
+    </script>
 </body>
 </html>
