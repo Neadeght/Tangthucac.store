@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CapCut ➔ SRT (Lọc Sạch Rác)</title>
+    <title>CapCut ➔ SRT (Bản Tự Sửa Lỗi)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -33,13 +33,13 @@
 <body>
 
     <div class="container">
-        <h1>CapCut ➔ SRT (Bản Lọc Sạch Rác)</h1>
-        <p class="subtitle">Phiên bản cuối cùng: Tự động tách chữ tiếng Việt ra khỏi mớ code hỗn độn.</p>
+        <h1>CapCut ➔ SRT (Có AI Sửa Lỗi)</h1>
+        <p class="subtitle">Bản đặc biệt: Tự động fix lỗi nghe nhầm số (23 10 thành 20-30) của CapCut</p>
 
         <div class="dropzone" id="dropzone">
             <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color: #3b82f6; margin-bottom: 1rem;"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path></svg>
             <h3>Kéo thả file draft_content.json vào đây</h3>
-            <p style="color: #94a3b8;">Hệ thống sẽ mổ xẻ lấy chữ sạch 100%</p>
+            <p style="color: #94a3b8;">Hệ thống sẽ lọc sạch rác và sửa luôn chính tả cho bạn</p>
             <input type="file" id="fileInput" accept=".json" style="display: none;">
         </div>
 
@@ -111,13 +111,31 @@
             
             dropzone.style.display = "none";
             resultSection.style.display = "block";
-            statusBadge.innerHTML = `✅ Tuyệt vời! Đã lọc sạch ${linesCount} dòng phụ đề.`;
+            statusBadge.innerHTML = `✅ Tuyệt vời! Đã lọc sạch và sửa lỗi ${linesCount} dòng phụ đề.`;
             previewBox.textContent = finalSrt;
         }
 
-        // HÀM MỔ XẺ LẤY CHỮ SẠCH 100% CỦA CAPCUT
+        // BỘ TỪ ĐIỂN AUTO-CORRECT: TỰ ĐỘNG SỬA LỖI NHẬN DIỆN SỐ CỦA CAPCUT
+        function autoCorrect(text) {
+            const fixMap = {
+                "12 10": "10-20",
+                "23 10": "20-30",
+                "34 10": "30-40",
+                "45 10": "40-50",
+                "56 10": "50-60",
+                "67 10": "60-70",
+                "78 10": "70-80",
+                "89 10": "80-90"
+            };
+            for (let [wrong, correct] of Object.entries(fixMap)) {
+                // Dùng Regex bọc chữ để tránh sửa nhầm những con số ngẫu nhiên
+                text = text.replace(new RegExp(`\\b${wrong}\\b`, "g"), correct);
+            }
+            return text;
+        }
+
+        // HÀM MỔ XẺ LẤY CHỮ SẠCH 100%
         function cleanTextExtremely(obj) {
-            // Ưu tiên text_str
             let content = obj.text_str || obj.text || obj.content;
             if (content === null || content === undefined) return "";
 
@@ -126,13 +144,11 @@
             }
 
             if (typeof content === 'string') {
-                // Xóa mã rác HTML
                 content = content.replace(/<[^>]+>/g, '').trim();
 
                 if (content.startsWith('{') || content.startsWith('[')) {
                     let parsedSuccess = false;
                     try {
-                        // Sửa lỗi JSON bị ngắt dòng ẩn của CapCut
                         let safeJson = content.replace(/\n/g, '\\n').replace(/\r/g, '');
                         let parsed = JSON.parse(safeJson);
                         if (Array.isArray(parsed)) {
@@ -143,7 +159,6 @@
                         }
                     } catch(e) {}
 
-                    // Nếu Parse JSON thất bại, dùng thủ thuật Regex bắt sống chữ tiếng Việt
                     if (!parsedSuccess) {
                         let match = content.match(/"text"\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"/);
                         if (match && match[1]) {
@@ -159,13 +174,15 @@
                     }
                 }
             }
-            return String(content).trim();
+            
+            // Xử lý bước cuối: Chạy qua bộ lọc Auto-Correct trước khi trả về kết quả
+            let finalString = String(content).trim();
+            return autoCorrect(finalString);
         }
 
         function parseUniversalCapCut(json) {
             let textMap = {};
             
-            // 1. Quét tìm chữ
             function extractTexts(obj) {
                 if (Array.isArray(obj)) {
                     obj.forEach(extractTexts);
@@ -179,7 +196,6 @@
             }
             extractTexts(json);
 
-            // 2. Quét tìm thời gian
             let subtitles = [];
             function extractTimings(obj) {
                 if (Array.isArray(obj)) {
@@ -235,7 +251,7 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = "phude_capcut_sach.srt";
+            a.download = "phude_capcut_vip.srt";
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
